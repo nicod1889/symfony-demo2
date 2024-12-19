@@ -24,8 +24,9 @@ class PersonaType extends AbstractType {
                 'required'=> false])
             ->add('club', EntityType::class, [
                 'class' => Club::class,
-                'choice_label' => 'name'
-            ])
+                'choice_label' => 'name',
+                'required' => true,
+                'placeholder' => 'Seleccione un club.'])
         ;
     }
 

@@ -12,9 +12,11 @@ class ClubType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options): void {
         $builder
             ->add('name', TextType::class, [
-                'required' => false])
+                'required' => false,
+                'help' => "Ingrese el nombre del club."])
             ->add('city', TextType::class, [
-                'required' => false]);
+                'required' => false,
+                'help' => "Ingrese la ciudad del club."]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void {
