@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Listado de personas{% endblock %}
+
+{% block body %}
+    <div class="d-flex justify-content-between">
+        <h1>Listado de personas</h1>
+        <a class="text-white btn btn-success mb-4" href="{{ path('app_persona_new') }}">Crear persona</a>
+    </div>    
+
+    <table class="table">
+        <thead>
+            <tr class="text-center">
+                <th>Nombre</th>
+                <th>Apellido</th>
+                <th>Dni</th>
+                <th>Edad</th>
+                <th>Club</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for persona in personas %}
+            <tr class="text-center">
+                <td>{{ persona.nombre }}</td>
+                <td>{{ persona.apellido }}</td>
+                <td>{{ persona.dni }}</td>
+                <td>{{ persona.edad }}</td>
+                <td><a>{{ persona.club.name }}</a></td>
+                <td>
+                    <a href="{{ path('app_persona_show', {'id': persona.id}) }}"><i class="fa-solid fa-eye"></i></a>
+                    <a href="{{ path('app_persona_edit', {'id': persona.id}) }}"><i class="fa-solid fa-pen-to-square"></i></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr class="text-center">
+                <td colspan="7">No existen registros.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    
+{% endblock %}
