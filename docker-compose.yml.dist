@@ -6,7 +6,7 @@ services:
     build:
       context: ./docker
       args:
-        UID: $U_ID
+        UID: 1000
     volumes:
       - ./:/var/www/html
     ###> XDEBUG 3 ###

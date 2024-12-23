@@ -6,6 +6,9 @@ use App\Entity\Comment;
 use App\Entity\Post;
 use App\Entity\Tag;
 use App\Entity\User;
+use App\Entity\Conductor;
+use App\Entity\Columnista;
+use App\Entity\Invitado;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -24,6 +27,27 @@ final class AppFixtures extends Fixture {
         $this->loadUsers($manager);
         $this->loadTags($manager);
         $this->loadPosts($manager);
+        $this->loadConductores($manager);
+    }
+
+    public function loadConductores(ObjectManager $manager): void {
+        foreach($this->getConductoresData() as [$nombre, $apellido, $edad, $foto, $cumple, $apodo, $instagram, $twitter, $youtube]) {
+            $conductor = new Conductor();
+            $conductor->setNombre($nombre);
+            $conductor->setApellido($apellido);
+            $conductor->setEdad($edad);
+            $conductor->setFoto($foto);
+            $conductor->setCumple(new \DateTime('2024-12-23'));
+            $conductor->setApodo($apodo);
+            $conductor->setInstagram($instagram);
+            $conductor->setTwitter($twitter);
+            $conductor->setYoutube($youtube);
+
+            $manager->persist($conductor);
+            $this->addReference($nombre, $conductor);
+        }
+
+        $manager->flush();
     }
 
     private function loadUsers(ObjectManager $manager): void {
@@ -91,6 +115,18 @@ final class AppFixtures extends Fixture {
             ['Jane Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', [User::ROLE_ADMIN]],
             ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
             ['John Doe', 'john_user', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
+            ['Nicolas Dinolfo', 'nicod1889', '123', 'nicod1889@symfony.com', [User::ROLE_USER]]
+        ];
+    }
+
+    /**
+     * @return array<array{string, string, integer, string, \DateTime, string, string, string, string}>
+     */
+    private function getConductoresData(): array {
+        // $conductorData = [$nombre, $apellido, $edad, $foto, $cumple, $apodo, $instagram, $twitter, $youtube]
+        return [
+            ['Lucas', 'Rodriguez', 30, 'imagenlucas.jpg', '1980-10-10', 'El Streamer', 'lucas.instagram', 'lucas.twitter', 'lucas.youtube'],
+            ['Germán', 'Beder', 30, 'imagengerman.jpg', '1980-10-10', 'El Intrépido', 'german.instagram', 'german.twitter', 'german.youtube'],
         ];
     }
 
@@ -108,6 +144,8 @@ final class AppFixtures extends Fixture {
             'voluptate',
             'dolore',
             'pariatur',
+            'TAG NUEVO',
+            'ACA HAY OTRO TAG CHE'
         ];
     }
 
