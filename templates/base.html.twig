@@ -45,28 +45,13 @@
                                     {% endif %}
                                 {% endblock %}
 
+                                <li class="nav-item{{ _route == 'app_programa_index' ? ' active' : '' }}">
+                                    <a class="nav-link" href="{{ path('app_programa_index') }}">  
+                                        Programas
+                                    </a>
+                                </li>
                                 <li class="nav-item{{ _route == 'blog_search' ? ' active' : '' }}">
                                     <a class="nav-link" href="{{ path('blog_search') }}"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
-                                </li>
-                                <li class="nav-item{{ _route == 'app_category_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_category_index') }}">  
-                                        Categorias
-                                    </a>
-                                </li>
-                                <li class="nav-item{{ _route == 'app_producto_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_producto_index') }}">  
-                                        Productos
-                                    </a>
-                                </li>
-                                <li class="nav-item{{ _route == 'app_persona_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_persona_index') }}">  
-                                        Personas
-                                    </a>
-                                </li>
-                                <li class="nav-item{{ _route == 'app_club_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_club_index') }}">  
-                                        Clubes
-                                    </a>
                                 </li>
 
                                 {% if app.user %}

@@ -4,11 +4,14 @@ namespace App\DataFixtures;
 
 use App\Entity\Comment;
 use App\Entity\Post;
+use App\Entity\Programa;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\Conductor;
 use App\Entity\Columnista;
 use App\Entity\Invitado;
+use Psr\Log\LoggerInterface;
+use App\Service\YoutubeService;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -19,7 +22,9 @@ use function Symfony\Component\String\u;
 final class AppFixtures extends Fixture {
     public function __construct(
         private readonly UserPasswordHasherInterface $passwordHasher,
-        private readonly SluggerInterface $slugger
+        private readonly SluggerInterface $slugger,
+        private readonly YoutubeService $youtubeService,
+        private readonly LoggerInterface $logger
     ) {
     }
 
@@ -28,6 +33,7 @@ final class AppFixtures extends Fixture {
         $this->loadTags($manager);
         $this->loadPosts($manager);
         $this->loadConductores($manager);
+        $this->loadProgramas($manager);
     }
 
     public function loadConductores(ObjectManager $manager): void {
@@ -64,6 +70,30 @@ final class AppFixtures extends Fixture {
         }
 
         $manager->flush();
+    }
+
+    private function loadProgramas(ObjectManager $manager): void {
+        try {
+            $playlistId = 'PLF7Kn3e1aapadYJfWvzACqPG-mqdfOixG';
+            $programas = $this->youtubeService->getProgramasFromPlaylist($playlistId);
+
+            foreach ($programas as $programaData) {
+                $programa = new Programa();
+                $programa->setTitulo($programaData->getTitulo());
+                $programa->setFecha($programaData->getFecha());
+                $programa->setLink($programaData->getLink());
+                $programa->setMiniatura($programaData->getMiniatura());
+                $programa->setEdicion('programa');
+
+                $manager->persist($programa);
+            }
+
+            $manager->flush();
+
+            $this->logger->info('Programas cargados correctamente desde YouTube.');
+        } catch (\Exception $e) {
+            $this->logger->error('Error al cargar los programas: ' . $e->getMessage());
+        }
     }
 
     private function loadTags(ObjectManager $manager): void {
