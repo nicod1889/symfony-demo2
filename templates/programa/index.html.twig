@@ -15,9 +15,14 @@
                 <h5 class="card-title">{{ programa.titulo }}</h5>
                 <p class="card-text">Edición: {{ programa.edicion }}</p>
                 <p class="card-text">Programa número {{ programa.id }}</p>
+                <h6>Conductores:</h6>
+                {% for conductor in programa.conductores %}
+                    <p>{{ conductor.id }}</p>
+                {% endfor %}
             </div>
             <div class="card-footer">
                 <small class="text-muted">{{ programa.fecha ? programa.fecha|date('Y-m-d') : '' }}</small>
+                <a href="{{ path('app_programa_show', {'id': programa.id}) }}">show</a>
             </div>
             </div>
         </div>

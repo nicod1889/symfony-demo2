@@ -29,8 +29,12 @@ class YoutubeService {
                 $nextPageToken ? '&pageToken=' . $nextPageToken : ''
             );
 
-            $response = $this->httpClient->request('GET', $url);
-            $data = $response->toArray();
+            try {
+                $response = $this->httpClient->request('GET', $url);
+                $data = $response->toArray();
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Error al comunicarse con la API de YouTube: ' . $e->getMessage());
+            }
 
             if (isset($data['items'])) {
                 foreach ($data['items'] as $item) {
@@ -38,7 +42,7 @@ class YoutubeService {
                     $programa = new Programa();
                     $programa->setTitulo($snippet['title']);
                     $programa->setFecha(new \DateTime($snippet['publishedAt']));
-                    $programa->setLink('https://www.youtube.com/watch?v='.$snippet['resourceId']['videoId']);
+                    $programa->setLinkYoutube('https://www.youtube.com/watch?v='.$snippet['resourceId']['videoId']);
                     $programa->setMiniatura($snippet['thumbnails']['medium']['url']);
 
                     array_unshift($programas, $programa);

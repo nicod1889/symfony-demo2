@@ -33,6 +33,7 @@ final class AppFixtures extends Fixture {
         $this->loadTags($manager);
         $this->loadPosts($manager);
         $this->loadConductores($manager);
+        $this->loadColumnistas($manager);
         $this->loadProgramas($manager);
     }
 
@@ -52,8 +53,66 @@ final class AppFixtures extends Fixture {
             $manager->persist($conductor);
             $this->addReference($nombre, $conductor);
         }
+        $manager->flush();
+    }
+
+    public function loadColumnistas(ObjectManager $manager): void {
+
+        foreach($this->getColumnistasData() as [$nombre, $apellido, $edad, $foto, $apodo, $columna]) {
+            $columnista = new Columnista();
+            $columnista->setNombre($nombre);
+            $columnista->setApellido($apellido);
+            $columnista->setEdad($edad);
+            $columnista->setFoto($foto);
+            $columnista->setApodo($apodo);
+            $columnista->setColumna($columna);
+
+            $manager->persist($columnista);
+            $this->addReference($apellido, $columnista);
+        }
 
         $manager->flush();
+    }
+
+    private function loadProgramas(ObjectManager $manager): void {
+        try {
+            $playlistId = 'PLF7Kn3e1aapadYJfWvzACqPG-mqdfOixG';
+            $programas = $this->youtubeService->getProgramasFromPlaylist($playlistId);
+
+            $conductores = $manager->getRepository(Conductor::class)->findAll();
+
+            foreach ($programas as $programaData) {
+                $programa = new Programa();
+                $programa->setTitulo($programaData->getTitulo());
+                $programa->setFecha($programaData->getFecha());
+                $programa->setLinkYoutube($programaData->getLinkYoutube());
+                $programa->setMiniatura($programaData->getMiniatura());
+                $programa->setEdicion('programa');
+
+                foreach ($conductores as $conductor) {
+                    $programa->addConductor($conductor);
+                }
+
+                $manager->persist($programa);
+            }
+
+            $manager->flush();
+
+            // Verificación: Log para cada programa y sus conductores
+            foreach ($programas as $programa) {
+                $conductoresCount = count($programa->getConductores());
+                $this->logger->info('Programa: ' . $programa->getTitulo() . ' tiene ' . $conductoresCount . ' conductores asignados.');
+                
+                // Verifica si el número de conductores es el esperado (en este caso, todos los conductores)
+                if ($conductoresCount !== count($conductores)) {
+                    $this->logger->error('El programa ' . $programa->getTitulo() . ' no tiene todos los conductores asignados.');
+                }
+            }
+
+            $this->logger->info('Programas cargados correctamente desde YouTube.');
+        } catch (\Exception $e) {
+            $this->logger->error('Error al cargar los programas: ' . $e->getMessage());
+        }
     }
 
     private function loadUsers(ObjectManager $manager): void {
@@ -70,30 +129,6 @@ final class AppFixtures extends Fixture {
         }
 
         $manager->flush();
-    }
-
-    private function loadProgramas(ObjectManager $manager): void {
-        try {
-            $playlistId = 'PLF7Kn3e1aapadYJfWvzACqPG-mqdfOixG';
-            $programas = $this->youtubeService->getProgramasFromPlaylist($playlistId);
-
-            foreach ($programas as $programaData) {
-                $programa = new Programa();
-                $programa->setTitulo($programaData->getTitulo());
-                $programa->setFecha($programaData->getFecha());
-                $programa->setLink($programaData->getLink());
-                $programa->setMiniatura($programaData->getMiniatura());
-                $programa->setEdicion('programa');
-
-                $manager->persist($programa);
-            }
-
-            $manager->flush();
-
-            $this->logger->info('Programas cargados correctamente desde YouTube.');
-        } catch (\Exception $e) {
-            $this->logger->error('Error al cargar los programas: ' . $e->getMessage());
-        }
     }
 
     private function loadTags(ObjectManager $manager): void {
@@ -143,9 +178,9 @@ final class AppFixtures extends Fixture {
         return [
             // $userData = [$fullname, $username, $password, $email, $roles];
             ['Jane Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', [User::ROLE_ADMIN]],
-            ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
-            ['John Doe', 'john_user', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
-            ['Nicolas Dinolfo', 'nicod1889', '123', 'nicod1889@symfony.com', [User::ROLE_USER]]
+            ['Tom Doe', 'tom_admin123', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
+            ['John Doe', 'john_user456', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
+            ['Nicolas Dinolfo', 'nicod1889xyz', '123', 'nicod1889@symfony.com', [User::ROLE_USER]]
         ];
     }
 
@@ -155,8 +190,25 @@ final class AppFixtures extends Fixture {
     private function getConductoresData(): array {
         // $conductorData = [$nombre, $apellido, $edad, $foto, $cumple, $apodo, $instagram, $twitter, $youtube]
         return [
-            ['Lucas', 'Rodriguez', 30, 'imagenlucas.jpg', '1980-10-10', 'El Streamer', 'lucas.instagram', 'lucas.twitter', 'lucas.youtube'],
-            ['Germán', 'Beder', 30, 'imagengerman.jpg', '1980-10-10', 'El Intrépido', 'german.instagram', 'german.twitter', 'german.youtube'],
+            ['Lucas', 'Rodriguez', 30, 'https://pbs.twimg.com/media/GOtpyuxWoAAkH7R?format=jpg&name=small', '1992-03-21', 'Luquitas', 'https://www.instagram.com/luquitarodrigue/', 'https://twitter.com/LuquitaRodrigue', 'https://www.youtube.com/@LuquitasRodriguez'],
+            ['Germán', 'Beder', 30, 'https://pbs.twimg.com/media/GOtrGqDWEAAlXVW?format=jpg&name=small', '1983-05-24', 'Gercho', 'https://www.instagram.com/gbeder/', 'https://twitter.com/gbeder', 'https://www.youtube.com/@GBeder'],
+            ['Alfredo', 'Montes de Oca', 30, 'https://pbs.twimg.com/media/GOtrfjgW4AAIbOT?format=jpg&name=small', '1980-09-18', 'Alfre', 'https://www.instagram.com/alfremontes/', 'https://twitter.com/alfremontes', 'https://www.youtube.com/@Alfremontes'],
+            ['Roberto', 'Galati', 30, 'https://pbs.twimg.com/media/GOtsLQRXYAA-Nym?format=jpg&name=small', '1980-02-20', 'Rober', 'https://www.instagram.com/robergalati/', 'https://twitter.com/robergalati', 'https://www.youtube.com/@robergalati3366'],
+            ['Joaquin', 'Cavanna', 30, 'https://pbs.twimg.com/media/GOw331DWcAAizab?format=jpg&name=small', '1980-02-20', 'Joaco', 'https://www.instagram.com/joacavanna/', 'https://twitter.com/joacavanna', 'https://www.youtube.com/@joacavanna'],
+            ['PRUEBA', 'AGREGADO', 30, 'https://pbs.twimg.com/media/GOw331DWcAAizab?format=jpg&name=small', '1980-02-20', 'Joaco', 'https://www.instagram.com/joacavanna/', 'https://twitter.com/joacavanna', 'https://www.youtube.com/@joacavanna']
+        ];
+    }
+
+    /**
+     * @return array<array{string, string, integer, string, string, string}>
+     */
+    private function getColumnistasData(): array {
+        // $columnistaData = [$nombre, $apellido, $edad, $foto, $apodo, $columna]
+        return [
+            ['Joaquin', 'Cavanna', 30, 'https://pbs.twimg.com/media/GOw331DWcAAizab?format=jpg&name=small', 'Joaco', 'Videos de internet'],
+            ['Juan', 'Castro', 30, 'https://pbs.twimg.com/media/Ga3QY1PWEAAbnfN?format=png&name=small', 'Juan', 'Futbol y mundo brasil'],
+            ['Alexis', 'Valido', 30, 'https://pbs.twimg.com/media/GOwyvV3XIAEWoEf?format=jpg&name=small', 'Alexis', 'Musica'],
+            ['Juan', 'Igal', 20, 'https://pbs.twimg.com/media/GOwzhqtWIAMsZ-C?format=jpg&name=small', 'Juan', 'Futbol y mundo internet']
         ];
     }
 
