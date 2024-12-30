@@ -11,6 +11,5 @@ class ConductorService {
     public function __construct(EntityManagerInterface $entityManager) {
         $this->entityManager = $entityManager;
     }
-
-    
+   
 }

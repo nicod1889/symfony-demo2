@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ConductorRepository::class)]
 class Conductor extends Persona2 {
+    
     #[ORM\Column(type: "date", nullable: true)]
     private ?\DateTime $cumple = null;
 

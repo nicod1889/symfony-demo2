@@ -89,25 +89,14 @@ final class AppFixtures extends Fixture {
                 $programa->setMiniatura($programaData->getMiniatura());
                 $programa->setEdicion('programa');
 
-                foreach ($conductores as $conductor) {
+                /*foreach ($conductores as $conductor) {
                     $programa->addConductor($conductor);
-                }
+                }*/
 
                 $manager->persist($programa);
             }
 
             $manager->flush();
-
-            // Verificación: Log para cada programa y sus conductores
-            foreach ($programas as $programa) {
-                $conductoresCount = count($programa->getConductores());
-                $this->logger->info('Programa: ' . $programa->getTitulo() . ' tiene ' . $conductoresCount . ' conductores asignados.');
-                
-                // Verifica si el número de conductores es el esperado (en este caso, todos los conductores)
-                if ($conductoresCount !== count($conductores)) {
-                    $this->logger->error('El programa ' . $programa->getTitulo() . ' no tiene todos los conductores asignados.');
-                }
-            }
 
             $this->logger->info('Programas cargados correctamente desde YouTube.');
         } catch (\Exception $e) {
@@ -178,8 +167,8 @@ final class AppFixtures extends Fixture {
         return [
             // $userData = [$fullname, $username, $password, $email, $roles];
             ['Jane Doe', 'jane_admin', 'kitten', 'jane_admin@symfony.com', [User::ROLE_ADMIN]],
-            ['Tom Doe', 'tom_admin123', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
-            ['John Doe', 'john_user456', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
+            ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
+            ['John Doe', 'john_user', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
             ['Nicolas Dinolfo', 'nicod1889xyz', '123', 'nicod1889@symfony.com', [User::ROLE_USER]]
         ];
     }
@@ -195,7 +184,6 @@ final class AppFixtures extends Fixture {
             ['Alfredo', 'Montes de Oca', 30, 'https://pbs.twimg.com/media/GOtrfjgW4AAIbOT?format=jpg&name=small', '1980-09-18', 'Alfre', 'https://www.instagram.com/alfremontes/', 'https://twitter.com/alfremontes', 'https://www.youtube.com/@Alfremontes'],
             ['Roberto', 'Galati', 30, 'https://pbs.twimg.com/media/GOtsLQRXYAA-Nym?format=jpg&name=small', '1980-02-20', 'Rober', 'https://www.instagram.com/robergalati/', 'https://twitter.com/robergalati', 'https://www.youtube.com/@robergalati3366'],
             ['Joaquin', 'Cavanna', 30, 'https://pbs.twimg.com/media/GOw331DWcAAizab?format=jpg&name=small', '1980-02-20', 'Joaco', 'https://www.instagram.com/joacavanna/', 'https://twitter.com/joacavanna', 'https://www.youtube.com/@joacavanna'],
-            ['PRUEBA', 'AGREGADO', 30, 'https://pbs.twimg.com/media/GOw331DWcAAizab?format=jpg&name=small', '1980-02-20', 'Joaco', 'https://www.instagram.com/joacavanna/', 'https://twitter.com/joacavanna', 'https://www.youtube.com/@joacavanna']
         ];
     }
 

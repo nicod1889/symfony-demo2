@@ -1,72 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Conductor index{% endblock %}
+{% block title %}Conductores PLM{% endblock %}
 
 {% block body %}
-    <h1>Conductor index</h1>
+    <h1 class="text-center">Conductores PLM</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>Apellido</th>
-                <th>Edad</th>
-                <th>Foto</th>
-                <th>Cumple</th>
-                <th>Apodo</th>
-                <th>Instagram</th>
-                <th>Twitter</th>
-                <th>Youtube</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for conductor in conductors %}
-            <tr>
-                <td>{{ conductor.id }}</td>
-                <td>{{ conductor.nombre }}</td>
-                <td>{{ conductor.apellido }}</td>
-                <td>{{ conductor.edad }}</td>
-                <td>{{ conductor.foto }}</td>
-                <td>{{ conductor.cumple ? conductor.cumple|date('Y-m-d') : '' }}</td>
-                <td>{{ conductor.apodo }}</td>
-                <td>{{ conductor.instagram }}</td>
-                <td>{{ conductor.twitter }}</td>
-                <td>{{ conductor.youtube }}</td>
-                <td>
-                    <a href="{{ path('app_conductor_show', {'id': conductor.id}) }}">show</a>
-                    <a href="{{ path('app_conductor_edit', {'id': conductor.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="11">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_conductor_new') }}">Create new</a>
-
-    <div class="row row-cols-1 row-cols-md-3 g-4">
+    <div class="row row-cols-1 row-cols-md-1 g-4">
     {% for conductor in conductors %}
-        <div class="col">
-            <div class="card h-100">
-            <img src="..." class="card-img-top" alt="...">
-            <div class="card-body">
-                <h5 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h5>
-                <p class="card-text">
-                    {{ conductor.apodo }} tiene {{ conductor.edad }} años.
-                </p>
-            </div>
-            <div class="card-footer text-center">
-                <a class="btn btn-outline-primary p-1 mr-1" href="{{ conductor.instagram }}" role="button">Instagram</a>
-                <a class="btn btn-outline-primary p-1 mr-1" href="{{ conductor.twitter }}" role="button">Twitter</a>
-                <a class="btn btn-outline-primary p-1" href="{{ conductor.youtube }}" role="button">Youtube</a>
-            </div>
+    <div class="card mb-3" style="height: 270px;">
+    <div class="row g-0">
+        <div class="col-md-4">
+            <img src="{{ conductor.foto }}" style="height: 268px; width: 400px" class="rounded-start" alt="...">
+        </div>
+        <div class="col-md-8">
+        <div class="card-body ml-3">
+            <h2 class="card-title">{{ conductor.nombre }} {{ conductor.apellido }}</h2>
+            <p class="card-text">{{ conductor.apodo }} tiene {{ conductor.edad }} años. {{ conductor.cumple|date('Y-m-d') }}</p>
+            <div class="text-center d-flex align-items-end">
+                <a class="btn btn-outline-primary p-1 mr-2" href="{{ conductor.instagram }}" role="button" target="_blank">Instagram</a>
+                <a class="btn btn-outline-primary p-1 mr-2" href="{{ conductor.twitter }}" role="button" target="_blank">Twitter</a>
+                <a class="btn btn-outline-primary p-1 mr-2" href="{{ conductor.youtube }}" role="button" target="_blank">Youtube</a>
+                <a class="btn btn-outline-primary p-1" href="#" role="button">Ver más</a>
+                <a href="{{ path('app_conductor_show', {'id': conductor.id}) }}">show</a>
             </div>
         </div>
+        </div>
+    </div>
+    </div>
     {% endfor %}
     </div>
+
 {% endblock %}

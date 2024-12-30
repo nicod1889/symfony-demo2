@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ColumnistaRepository::class)]
 class Columnista extends Persona2 {
+    
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $apodo = null;
 

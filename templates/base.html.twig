@@ -50,6 +50,16 @@
                                         Programas
                                     </a>
                                 </li>
+                                <li class="nav-item{{ _route == 'app_conductor_index' ? ' active' : '' }}">
+                                    <a class="nav-link" href="{{ path('app_conductor_index') }}">  
+                                        Conductores
+                                    </a>
+                                </li>
+                                <li class="nav-item{{ _route == 'app_columnista_index' ? ' active' : '' }}">
+                                    <a class="nav-link" href="{{ path('app_columnista_index') }}">  
+                                        Columnistas
+                                    </a>
+                                </li>
                                 <li class="nav-item{{ _route == 'blog_search' ? ' active' : '' }}">
                                     <a class="nav-link" href="{{ path('blog_search') }}"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
                                 </li>

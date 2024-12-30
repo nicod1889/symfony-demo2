@@ -3,6 +3,7 @@
 {% block title %}Programa index{% endblock %}
 
 {% block body %}
+<!-- 
     <h1 class="text-center">Listado de programas PLM</h1>
     <p class="text-center">Filtros</p>
 
@@ -15,10 +16,6 @@
                 <h5 class="card-title">{{ programa.titulo }}</h5>
                 <p class="card-text">Edición: {{ programa.edicion }}</p>
                 <p class="card-text">Programa número {{ programa.id }}</p>
-                <h6>Conductores:</h6>
-                {% for conductor in programa.conductores %}
-                    <p>{{ conductor.id }}</p>
-                {% endfor %}
             </div>
             <div class="card-footer">
                 <small class="text-muted">{{ programa.fecha ? programa.fecha|date('Y-m-d') : '' }}</small>
@@ -101,5 +98,10 @@
         </ul>
     </div>
     {% endif %}
+-->
+
+{% for programa in paginator.results %}
+<p class="m-0">{{ programa.titulo }}</p>
+{% endfor %}
 
 {% endblock %}

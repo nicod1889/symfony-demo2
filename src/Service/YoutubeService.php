@@ -7,7 +7,9 @@ use App\Entity\Programa;
 use Doctrine\ORM\EntityManagerInterface;
 
 class YoutubeService {
+
     public string $apiKey;
+    
     private $youtubeApiUrl = 'https://www.googleapis.com/youtube/v3/playlistItems';
 
     public function __construct(HttpClientInterface $httpClient, EntityManagerInterface $entityManager, string $apiKey) {
