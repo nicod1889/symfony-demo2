@@ -16,14 +16,14 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th>Nombre y apellido</th>
+                    <th>Nombre</th>
                     <th class="text-center">Acciones</th>
                 </tr>
             </thead>
             <tbody>
                 {% for persona in club.personas %}
                     <tr>
-                        <td><p class="m-0">{{persona.nombre}} {{persona.apellido}}</p></td>
+                        <td><p class="m-0">{{persona.nombre}}</p></td>
                         <td class="text-center">
                             <a href="#" data-toggle="modal" data-target="#persona-modal-{{persona.id}}" >
                                 <i class="fa-solid fa-eye"></i>
@@ -41,7 +41,7 @@
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <p>Nombre: {{persona.nombre}} {{persona.apellido}}</p>
+                                    <p>Nombre: {{persona.nombre}}</p>
                                     <p>DNI: {{persona.dni}}</p>
                                     <p>Edad: {{persona.edad}}</p>
                                 </div>

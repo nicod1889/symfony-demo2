@@ -12,7 +12,6 @@
         <thead>
             <tr class="text-center">
                 <th>Nombre</th>
-                <th>Apellido</th>
                 <th>Dni</th>
                 <th>Edad</th>
                 <th>Club</th>
@@ -23,7 +22,6 @@
         {% for persona in personas %}
             <tr class="text-center">
                 <td>{{ persona.nombre }}</td>
-                <td>{{ persona.apellido }}</td>
                 <td>{{ persona.dni }}</td>
                 <td>{{ persona.edad }}</td>
                 <td><a>{{ persona.club.name }}</a></td>
@@ -49,7 +47,6 @@
                             </div>
                             <div class="row">
                                 <div class="col"><p>Nombre: {{persona.nombre}}</p></div>
-                                <div class="col"><p>Apellido: {{persona.apellido}}</p></div>
                             </div>
                             <div class="row">
                                 <div class="col"><p>Edad: {{ persona.edad }}</p></div>

@@ -22,7 +22,6 @@ class Persona2Type extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('apellido')
             ->add('edad')
             ->add('foto')
         ;

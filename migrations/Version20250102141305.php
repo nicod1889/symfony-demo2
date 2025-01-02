@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20241230114647 extends AbstractMigration
+final class Version20250102141305 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -34,7 +34,7 @@ final class Version20241230114647 extends AbstractMigration
         $this->addSql('CREATE TABLE invitado (apodo VARCHAR(50) DEFAULT NULL, rubro VARCHAR(255) DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_4982EC17BF396750 FOREIGN KEY (id) REFERENCES persona2 (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE persona (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, apellido VARCHAR(50) NOT NULL, dni INTEGER NOT NULL, edad INTEGER NOT NULL, club_id INTEGER DEFAULT NULL, CONSTRAINT FK_51E5B69B61190A32 FOREIGN KEY (club_id) REFERENCES club (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_51E5B69B61190A32 ON persona (club_id)');
-        $this->addSql('CREATE TABLE persona2 (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, apellido VARCHAR(50) NOT NULL, edad INTEGER NOT NULL, foto VARCHAR(255) NOT NULL, tipo VARCHAR(255) NOT NULL)');
+        $this->addSql('CREATE TABLE persona2 (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, edad INTEGER NOT NULL, foto VARCHAR(255) NOT NULL, tipo VARCHAR(255) NOT NULL)');
         $this->addSql('CREATE TABLE probar (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(100) DEFAULT NULL)');
         $this->addSql('CREATE TABLE probar_programa (probar_id INTEGER NOT NULL, programa_id INTEGER NOT NULL, PRIMARY KEY(probar_id, programa_id), CONSTRAINT FK_9EBB0AC13C79F903 FOREIGN KEY (probar_id) REFERENCES probar (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_9EBB0AC1FD8A7328 FOREIGN KEY (programa_id) REFERENCES programa (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_9EBB0AC13C79F903 ON probar_programa (probar_id)');

@@ -22,7 +22,6 @@ class ConductorType extends AbstractType
     {
         $builder
             ->add('nombre')
-            ->add('apellido')
             ->add('edad')
             ->add('foto')
             ->add('cumple', null, [

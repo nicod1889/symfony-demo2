@@ -16,8 +16,6 @@ class PersonaType extends AbstractType {
         $builder
             ->add('nombre', TextType::class, [
                 'required' => false])
-            ->add('apellido', TextType::class, [
-                'required' => false])
             ->add('dni', NumberType::class, [
                 'required'=> false])
             ->add('edad', NumberType::class, [

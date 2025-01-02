@@ -23,9 +23,6 @@ class Persona2 {
     #[ORM\Column(length: 50)]
     private ?string $nombre = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $apellido = null;
-
     #[ORM\Column]
     private ?int $edad = null;
 
@@ -42,15 +39,6 @@ class Persona2 {
 
     public function setNombre(string $nombre): static {
         $this->nombre = $nombre;
-        return $this;
-    }
-
-    public function getApellido(): ?string {
-        return $this->apellido;
-    }
-
-    public function setApellido(string $apellido): static {
-        $this->apellido = $apellido;
         return $this;
     }
 
