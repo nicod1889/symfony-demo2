@@ -3,40 +3,29 @@
 {% block title %}Programa{% endblock %}
 
 {% block body %}
-    <h1>Programa</h1>
+    <h1>{{ programa.titulo }}</h1>
+    <h5>{{ programa.edicion }}</h5>
+    <img src="{{ programa.miniatura }}" style="width: 500px;" class="img-fluid rounded" alt="Miniatura del programa ">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ programa.id }}</td>
-            </tr>
-            <tr>
-                <th>Titulo</th>
-                <td>{{ programa.titulo }}</td>
-            </tr>
-            <tr>
-                <th>Fecha</th>
-                <td>{{ programa.fecha ? programa.fecha|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>Link</th>
-                <td>{{ programa.linkYoutube }}</td>
-            </tr>
-            <tr>
-                <th>Miniatura</th>
-                <td>{{ programa.miniatura }}</td>
-            </tr>
-            <tr>
-                <th>Edicion</th>
-                <td>{{ programa.edicion }}</td>
-            </tr>
-        </tbody>
-    </table>
-    <h4>Conductores:</h4>
+    
+    <h4 class="m-0">Conductores:</h4>
     {% for conductor in programa.conductores %}
         <p class="m-0">{{ conductor.nombre }}</p>
     {% endfor %}
+
+    {% if programa.columnistas|length > 0 %}
+        <h4 class="m-0">Columnistas:</h4>
+        {% for columnista in programa.columnistas %}
+            <p class="m-0">{{ columnista.nombre }} {{ columnista.id }}</p>
+        {% endfor %}
+    {% endif %}
+
+    {% if programa.invitados|length > 0 %}
+        <h4 class="m-0">Invitados:</h4>
+        {% for invitado in programa.invitados %}
+            <p class="m-0">{{ invitado.nombre }} {{ invitado.id }}</p>
+        {% endfor %}
+    {% endif %}
 
     <a href="{{ path('app_programa_index') }}">back to list</a>
 
