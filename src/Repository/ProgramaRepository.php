@@ -6,6 +6,7 @@ use App\Entity\Programa;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Programa>
@@ -15,9 +16,15 @@ class ProgramaRepository extends ServiceEntityRepository {
         parent::__construct($registry, Programa::class);
     }
 
-    public function findLatest(int $page = 1): Paginator {
-        $qb = $this->createQueryBuilder('p')->orderBy('p.id', 'DESC');
-    
+    public function findLatest(int $page = 1, string $search = ''): Paginator {
+        $qb = $this->createQueryBuilder('p')
+                   ->orderBy('p.id', 'ASC');
+
+        if ($search) {
+            $qb->andWhere('p.titulo LIKE :search')
+               ->setParameter('search', '%' . $search . '%');
+        }
+
         return (new Paginator($qb))->paginate($page);
     }
 

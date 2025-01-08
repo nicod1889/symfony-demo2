@@ -3,6 +3,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Comment;
+use App\Entity\Edicion;
 use App\Entity\Post;
 use App\Entity\Programa;
 use App\Entity\Tag;
@@ -31,8 +32,9 @@ final class AppFixtures extends Fixture {
         $this->loadUsers($manager);
         $this->loadTags($manager);
         $this->loadPosts($manager);
-        $this->loadPersona3($manager);
+        $this->loadEdiciones($manager);
         $this->loadProgramas($manager);
+        $this->loadPersona3($manager);
         $this->vincularConductoresYColumnistas($manager);
     }
 
@@ -46,9 +48,8 @@ final class AppFixtures extends Fixture {
                 $programa->setTitulo($programaData->getTitulo());
                 $programa->setFecha($programaData->getFecha());
                 $programa->setLinkYoutube($programaData->getLinkYoutube());
-                $programa->setMiniatura($programaData->getMiniatura());
-                $programa->setEdicion($programaData->getEdicion());
-    
+                $programa->setMiniaturaPequeña($programaData->getMiniaturaPequeña());
+                $programa->setMiniaturaGrande($programaData->getMiniaturaGrande());
                 $manager->persist($programa);
             }
     
@@ -65,6 +66,7 @@ final class AppFixtures extends Fixture {
             $jsonData = file_get_contents($filePath);
             $programasData = json_decode($jsonData, true);
             $personaRepository = $manager->getRepository(Persona3::class);
+            $edicionRepository = $manager->getRepository(Edicion::class);
     
             foreach ($programasData as $programaData) {
                 $programa = $manager->getRepository(Programa::class)->findOneBy(['titulo' => $programaData['titulo']]);
@@ -74,10 +76,21 @@ final class AppFixtures extends Fixture {
                     continue;
                 }
 
+                $programa->setEdicion($programaData['edicion']);
+                $programa->setlinkSpotify($programaData['spotify']);
+
+                $edicion = $edicionRepository->findOneBy(['nombre' => $programaData['edicion']]);
+                if ($edicion) {
+                    $programa->setEdicionClass($edicion);
+                } else {
+                    $this->logger->error('No se encontró la edición con nombre: ' . $programaData['edicion']);
+                }
+
                 $conductores = $personaRepository->findBy(['id' => $programaData['conductores']]);
                 foreach ($conductores as $conductor) {
                     $programa->addConductor($conductor);
                 }
+
 
                 $columnistas = $personaRepository->findBy(['id' => $programaData['columnistas']]);
                 foreach ($columnistas as $columnista) {
@@ -131,6 +144,17 @@ final class AppFixtures extends Fixture {
             $this->addReference($username, $user);
         }
 
+        $manager->flush();
+    }
+
+    private function loadEdiciones(ObjectManager $manager): void {
+        foreach ($this->getEdicionData() as [$nombre]) {
+            $edicion = new Edicion();
+            $edicion->setNombre($nombre);
+
+            $manager->persist($edicion);
+            $this->addReference($nombre, $edicion);
+        }
         $manager->flush();
     }
 
@@ -446,6 +470,18 @@ final class AppFixtures extends Fixture {
             ['Tom Doe', 'tom_admin', 'kitten', 'tom_admin@symfony.com', [User::ROLE_ADMIN]],
             ['John Doe', 'john_user', 'kitten', 'john_user@symfony.com', [User::ROLE_USER]],
             ['Nicolas Dinolfo', 'nicod1889xyz', '123', 'nicod1889@symfony.com', [User::ROLE_USER]]
+        ];
+    }
+
+    /**
+     * @return array<array{string}>
+     */
+    private function getEdicionData(): array {
+        return [
+            // $edicionData = [$nombre];
+            ['Estudio 2022'],
+            ['Show en vivo'],
+            ['Mundial - Qatar 2022']
         ];
     }
 

@@ -6,21 +6,34 @@
     <h1 class="text-center">Listado de programas PLM</h1>
     <p class="text-center">Filtros</p>
 
+    <form method="get" action="{{ path('programa_index_paginated', {page: paginator.currentPage}) }}">
+        <div class="input-group mb-3 w-50 mt-5">
+            <input type="text" name="search" id="search" class="form-control" placeholder="Escribe el título del programa" value="{{ app.request.query.get('search') }}">
+            <button type="submit" class="btn btn-primary ml-2">Buscar</button>
+        </div>
+    </form>
+
     <div class="row row-cols-1 row-cols-md-3 g-4">
         {% for programa in paginator.results %}
         <div class="col mb-3 ">
             <div class="card h-100 ">
-            <img src="{{ programa.miniatura }}" class="card-img-top " alt="Miniatura del programa ">
-            <div class="card-body">
-                <h5 class="card-title">{{ programa.titulo }}</h5>
-                <p class="card-text">Edición: {{ programa.edicion }}</p>
-                <p class="card-text">Programa número {{ programa.id }}</p>
-            </div>
-            <div class="card-footer">
-                <button data-toggle="modal" data-target="#programa-modal-{{programa.id}}"> Más data </button>
-                <button> Youtube </button>
-                <button> Spotify </button>
-            </div>
+                <img src="{{ programa.miniaturaPequeña }}" class="card-img-top " alt="Miniatura del programa ">
+                <div class="card-body">
+                    <h5 class="card-title">{{ programa.titulo }}</h5>
+                    {% if programa.edicionClass %}
+                        <p class="card-text mb-0">{{ programa.edicionClass.nombre }}</p>
+                    {% else %}
+                        <p class="card-text mb-0">Edición no disponible</p>
+                    {% endif %}
+                    <p class="card-text mt-2">Programa número {{ programa.id }}</p>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-primary py-1 px-2 mr-2" data-toggle="modal" data-target="#programa-modal-{{programa.id}}" target="_blank"> Más data </a>
+                    <a class="btn btn-danger py-1 px-2 mr-2" target="_blank" href="{{ programa.linkYoutube }}"> Youtube </a>
+                     {% if programa.linkSpotify != 'undefined' %}
+                    <a class="btn btn-success py-1 px-2" target="_blank" href="{{ programa.linkSpotify }}"> Spotify </a>
+                    {% endif %}
+                </div>
             </div>
 
             <div class="modal fade text-center" id="programa-modal-{{programa.id}}" tabindex="-1" role="dialog" aria-hidden="true">
@@ -29,10 +42,14 @@
                     <button type="button" class="close d-flex flex-row-reverse mr-3 mt-3" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                     <div>
                         <h5 class="modal-title">{{ programa.titulo }}</h5>
-                        <p class="card-text">{{ programa.edicion }}</p>
+                        {% if programa.edicionClass %}
+                            <p class="card-text">{{ programa.edicionClass.nombre }}</p>
+                        {% else %}
+                            <p class="card-text">Edición no disponible</p>
+                        {% endif %}
                     </div>
                     <div class="modal-body">
-                        <img src="{{ programa.miniatura }}" class="card-img-top " alt="Miniatura del programa ">
+                        <img src="{{ programa.miniaturaGrande }}" class="card-img-top " alt="Miniatura del programa ">
                         <div class="mt-3">
                             <div class="mt-3">
                                 <h6 class="m-0 d-inline">Conductores:</h6>
@@ -41,14 +58,22 @@
                                 {% endfor %}
                             </div>
                             {% if programa.columnistas|length > 0 %}
+                                {% if programa.columnistas|length == 1 %}
+                                <h6 class="m-0 d-inline">Columnista:</h6>
+                                {% else %}
                                 <h6 class="m-0 d-inline">Columnistas:</h6>
+                                {% endif %}
                                 {% for columnista in programa.columnistas %}
                                     <h6 class="m-0 d-inline me-2">{{ columnista.nombre }}{% if not loop.last %}, {% else %}.{% endif %}</h6>
                                 {% endfor %}
                                 <br>
                             {% endif %}
                             {% if programa.invitados|length > 0 %}
+                                {% if programa.invitados|length == 1 %}
+                                <h6 class="m-0 d-inline">Invitado:</h6>
+                                {% else %}
                                 <h6 class="m-0 d-inline">Invitados:</h6>
+                                {% endif %}
                                 {% for invitado in programa.invitados %}
                                     <h6 class="m-0 d-inline me-2">{{ invitado.nombre }}{% if not loop.last %}, {% else %}.{% endif %}</h6>
                                 {% endfor %}
@@ -67,7 +92,7 @@
         <ul class="pagination justify-content-center mt-3">
             {% if paginator.hasPreviousPage %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.previousPage}) }}" rel="previous">
+                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.previousPage, search: app.request.query.get('search')}) }}" rel="previous">
                         <i class="fa fw fa-long-arrow-left"></i>
                     </a>
                 </li>
@@ -79,7 +104,7 @@
 
             {% if paginator.currentPage > 6 %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path('programa_index_paginated', {page: 1}) }}">1</a>
+                    <a class="page-link" href="{{ path('programa_index_paginated', {page: 1, search: app.request.query.get('search')}) }}">1</a>
                 </li>
                 <li class="page-item">
                     <span class="page-link">...</span>
@@ -104,7 +129,7 @@
                         <span class="page-link">{{ i }} <span class="sr-only"></span></span>
                     </li>
                 {% else %}
-                    <li class="page-item"><a class="page-link" href="{{ path('programa_index_paginated', {page: i}) }}">{{ i }}</a></li>
+                    <li class="page-item"><a class="page-link" href="{{ path('programa_index_paginated', {page: i, search: app.request.query.get('search')}) }}">{{ i }}</a></li>
                 {% endif %}
             {% endfor %}
 
@@ -116,13 +141,13 @@
 
             {% if paginator.currentPage < paginator.lastPage - 5 %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.lastPage}) }}">{{ paginator.lastPage }}</a>
+                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.lastPage, search: app.request.query.get('search')}) }}">{{ paginator.lastPage }}</a>
                 </li>
             {% endif %}
 
             {% if paginator.hasNextPage %}
                 <li class="page-item">
-                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.nextPage}) }}">
+                    <a class="page-link" href="{{ path('programa_index_paginated', {page: paginator.nextPage, search: app.request.query.get('search')}) }}">
                         <span><i class="fa fw fa-long-arrow-right"></i></span>
                     </a>
                 </li>

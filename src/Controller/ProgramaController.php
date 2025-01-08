@@ -13,15 +13,18 @@ use Symfony\Component\Routing\Attribute\Route;
 
 #[Route('/programa')]
 class ProgramaController extends AbstractController {
-    #[Route('/', name: 'app_programa_index', defaults: ['page' => '1'], methods: ['GET'])]
+    #[Route('/', name: 'app_programa_index', defaults: ['page' => 1], methods: ['GET'])]
     #[Route('/page/{page<[0-9]\d*>}', name: 'programa_index_paginated', methods: ['GET'])]
-    public function index(ProgramaRepository $programaRepository, int $page): Response {
-        $programas = $programaRepository->findLatest($page);
-    
+    public function index(ProgramaRepository $programaRepository, int $page, Request $request): Response {
+        $search = $request->query->get('search', '');
+
+        $programas = $programaRepository->findLatest($page, $search);
+
         return $this->render('programa/index.html.twig', [
             'paginator' => $programas,
         ]);
     }
+    
 
     #[Route('/new', name: 'app_programa_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
