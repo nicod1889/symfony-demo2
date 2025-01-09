@@ -36,6 +36,8 @@ class Programa {
 
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $edicion = null;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $comentario = null;
 
     #[ORM\ManyToMany(targetEntity: Persona3::class)]
     #[ORM\JoinTable(name: "programa_conductores")]
@@ -128,6 +130,16 @@ class Programa {
 
     public function setEdicion(string $edicion): static {
         $this->edicion = $edicion;
+
+        return $this;
+    }
+
+    public function getComentario(): ?string {
+        return $this->comentario;
+    }
+
+    public function setComentario(string $comentario): static {
+        $this->comentario = $comentario;
 
         return $this;
     }

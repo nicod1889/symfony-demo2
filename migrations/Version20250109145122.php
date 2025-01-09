@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250108141240 extends AbstractMigration
+final class Version20250109145122 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -30,7 +30,7 @@ final class Version20250108141240 extends AbstractMigration
         $this->addSql('CREATE TABLE conductor_programa (conductor_id INTEGER NOT NULL, programa_id INTEGER NOT NULL, PRIMARY KEY(conductor_id, programa_id), CONSTRAINT FK_FA046A3A49DECF0 FOREIGN KEY (conductor_id) REFERENCES conductor (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_FA046A3FD8A7328 FOREIGN KEY (programa_id) REFERENCES programa (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_FA046A3A49DECF0 ON conductor_programa (conductor_id)');
         $this->addSql('CREATE INDEX IDX_FA046A3FD8A7328 ON conductor_programa (programa_id)');
-        $this->addSql('CREATE TABLE edicion (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(100) NOT NULL)');
+        $this->addSql('CREATE TABLE edicion (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(100) NOT NULL, tipo VARCHAR(50) NOT NULL)');
         $this->addSql('CREATE TABLE edificio (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, name VARCHAR(50) NOT NULL, street VARCHAR(100) NOT NULL, number_street INTEGER NOT NULL)');
         $this->addSql('CREATE TABLE invitado (apodo VARCHAR(50) DEFAULT NULL, rubro VARCHAR(255) DEFAULT NULL, id INTEGER NOT NULL, PRIMARY KEY(id), CONSTRAINT FK_4982EC17BF396750 FOREIGN KEY (id) REFERENCES persona2 (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE TABLE persona (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(50) NOT NULL, apellido VARCHAR(50) NOT NULL, dni INTEGER NOT NULL, edad INTEGER NOT NULL, club_id INTEGER DEFAULT NULL, CONSTRAINT FK_51E5B69B61190A32 FOREIGN KEY (club_id) REFERENCES club (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -45,7 +45,7 @@ final class Version20250108141240 extends AbstractMigration
         $this->addSql('CREATE INDEX IDX_A7BB061512469DE2 ON producto (category_id)');
         $this->addSql('CREATE INDEX product_sku ON producto (sku)');
         $this->addSql('CREATE INDEX product_price ON producto (price)');
-        $this->addSql('CREATE TABLE programa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(255) NOT NULL, fecha DATE NOT NULL, link_youtube VARCHAR(255) NOT NULL, link_spotify VARCHAR(255) DEFAULT NULL, miniatura_pequeña VARCHAR(255) NOT NULL, miniatura_grande VARCHAR(255) NOT NULL, edicion VARCHAR(50) DEFAULT NULL, edicion_class_id INTEGER DEFAULT NULL, CONSTRAINT FK_2F0140D6D63A7C7 FOREIGN KEY (edicion_class_id) REFERENCES edicion (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE TABLE programa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(255) NOT NULL, fecha DATE NOT NULL, link_youtube VARCHAR(255) NOT NULL, link_spotify VARCHAR(255) DEFAULT NULL, miniatura_pequeña VARCHAR(255) NOT NULL, miniatura_grande VARCHAR(255) NOT NULL, edicion VARCHAR(50) DEFAULT NULL, comentario VARCHAR(255) DEFAULT NULL, edicion_class_id INTEGER DEFAULT NULL, CONSTRAINT FK_2F0140D6D63A7C7 FOREIGN KEY (edicion_class_id) REFERENCES edicion (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_2F0140D6D63A7C7 ON programa (edicion_class_id)');
         $this->addSql('CREATE TABLE programa_conductores (programa_id INTEGER NOT NULL, persona3_id INTEGER NOT NULL, PRIMARY KEY(programa_id, persona3_id), CONSTRAINT FK_7B0E6A61FD8A7328 FOREIGN KEY (programa_id) REFERENCES programa (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE, CONSTRAINT FK_7B0E6A61CE2D16BD FOREIGN KEY (persona3_id) REFERENCES persona3 (id) ON DELETE CASCADE NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_7B0E6A61FD8A7328 ON programa_conductores (programa_id)');
@@ -71,6 +71,8 @@ final class Version20250108141240 extends AbstractMigration
         $this->addSql('CREATE TABLE symfony_demo_user (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, full_name VARCHAR(255) NOT NULL, username VARCHAR(255) NOT NULL, email VARCHAR(255) NOT NULL, password VARCHAR(255) NOT NULL, roles CLOB NOT NULL)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8FB094A1F85E0677 ON symfony_demo_user (username)');
         $this->addSql('CREATE UNIQUE INDEX UNIQ_8FB094A1E7927C74 ON symfony_demo_user (email)');
+        $this->addSql('CREATE TABLE vlog (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(255) NOT NULL, miniatura_pequeña VARCHAR(255) DEFAULT NULL, miniatura_grande VARCHAR(255) DEFAULT NULL, edicion_id INTEGER DEFAULT NULL, CONSTRAINT FK_1F6E918BD651B81E FOREIGN KEY (edicion_id) REFERENCES edicion (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_1F6E918BD651B81E ON vlog (edicion_id)');
     }
 
     public function down(Schema $schema): void
@@ -101,5 +103,6 @@ final class Version20250108141240 extends AbstractMigration
         $this->addSql('DROP TABLE symfony_demo_post_tag');
         $this->addSql('DROP TABLE symfony_demo_tag');
         $this->addSql('DROP TABLE symfony_demo_user');
+        $this->addSql('DROP TABLE vlog');
     }
 }

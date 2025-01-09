@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Programa;
+use App\Entity\Edicion;
 use App\Pagination\Paginator;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -16,17 +17,23 @@ class ProgramaRepository extends ServiceEntityRepository {
         parent::__construct($registry, Programa::class);
     }
 
-    public function findLatest(int $page = 1, string $search = ''): Paginator {
+    public function findLatest(int $page = 1, string $search = '', ?Edicion $edicion = null): Paginator {
         $qb = $this->createQueryBuilder('p')
-                   ->orderBy('p.id', 'ASC');
+        ->orderBy('p.id', 'ASC');
 
         if ($search) {
             $qb->andWhere('p.titulo LIKE :search')
-               ->setParameter('search', '%' . $search . '%');
+            ->setParameter('search', '%' . $search . '%');
+        }
+
+        if ($edicion) {
+            $qb->andWhere('p.edicionClass = :edicion')
+            ->setParameter('edicion', $edicion);
         }
 
         return (new Paginator($qb))->paginate($page);
     }
+    
 
     //    /**
     //     * @return Programa[] Returns an array of Programa objects

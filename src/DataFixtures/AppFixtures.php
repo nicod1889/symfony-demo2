@@ -6,6 +6,7 @@ use App\Entity\Comment;
 use App\Entity\Edicion;
 use App\Entity\Post;
 use App\Entity\Programa;
+use App\Entity\Vlog;
 use App\Entity\Tag;
 use App\Entity\User;
 use App\Entity\Persona3;
@@ -35,6 +36,7 @@ final class AppFixtures extends Fixture {
         $this->loadEdiciones($manager);
         $this->loadProgramas($manager);
         $this->loadPersona3($manager);
+        $this->loadVlogs($manager);
         $this->vincularConductoresYColumnistas($manager);
     }
 
@@ -60,6 +62,41 @@ final class AppFixtures extends Fixture {
         }
     }
 
+    private function loadVlogs(ObjectManager $manager): void {
+        try {
+            $playlists = [
+                'PLF7Kn3e1aapYCnApa8fW4kvvAjqb3-h9K' => 'Vlog Final FA Cup 2022',
+                'PLF7Kn3e1aapav1JcV8ioH7fZYb5chwsrW' => 'Vlog Qatar - Mundial 2022'
+            ];
+            $edicionRepository = $manager->getRepository(Edicion::class);
+    
+            foreach ($playlists as $playlistId => $nombreEdicion) {
+                $vlogs = $this->youtubeService->getVlogsFromPLaylist($playlistId);
+    
+                foreach ($vlogs as $vlogData) {
+                    $vlog = new Vlog();
+                    $vlog->setTitulo($vlogData->getTitulo());
+                    $vlog->setMiniaturaPequeña($vlogData->getMiniaturaPequeña());
+                    $vlog->setMiniaturaGrande($vlogData->getMiniaturaGrande());
+                    $edicion = $edicionRepository->findByNombre($nombreEdicion);
+    
+                    if ($edicion) {
+                        $vlog->setEdicion($edicion);
+                    } else {
+                        $this->logger->error('No se encontró la edición con nombre: ' . $nombreEdicion);
+                    }
+    
+                    $manager->persist($vlog);
+                }
+            }
+    
+            $manager->flush();
+            $this->logger->info('Vlogs cargados correctamente desde YouTube.');
+        } catch (\Exception $e) {
+            $this->logger->error('Error al cargar los vlogs: ' . $e->getMessage());
+        }
+    }
+
     private function vincularConductoresYColumnistas(ObjectManager $manager): void {
         try {
             $filePath = 'data/programas_conductores.json';   
@@ -78,6 +115,7 @@ final class AppFixtures extends Fixture {
 
                 $programa->setEdicion($programaData['edicion']);
                 $programa->setlinkSpotify($programaData['spotify']);
+                $programa->setComentario($programaData['comentario']);
 
                 $edicion = $edicionRepository->findOneBy(['nombre' => $programaData['edicion']]);
                 if ($edicion) {
@@ -148,9 +186,10 @@ final class AppFixtures extends Fixture {
     }
 
     private function loadEdiciones(ObjectManager $manager): void {
-        foreach ($this->getEdicionData() as [$nombre]) {
+        foreach ($this->getEdicionData() as [$nombre, $tipo]) {
             $edicion = new Edicion();
             $edicion->setNombre($nombre);
+            $edicion->setTipo($tipo);
 
             $manager->persist($edicion);
             $this->addReference($nombre, $edicion);
@@ -474,14 +513,29 @@ final class AppFixtures extends Fixture {
     }
 
     /**
-     * @return array<array{string}>
+     * @return array<array{string, string}>
      */
     private function getEdicionData(): array {
         return [
-            // $edicionData = [$nombre];
-            ['Estudio 2022'],
-            ['Show en vivo'],
-            ['Mundial - Qatar 2022']
+            // $edicionData = [$nombre, $tipo];
+            ['Estudio 2022', 'programa'],
+            ['Show en vivo', 'programa'],
+            ['Mundial - Qatar 2022', 'programa'],
+            ['Estudio 2023', 'programa'],
+            ['Ciudad Emergente', 'programa'],
+            ['España 2023', 'programa'],
+            ['Primavera en Vicente Lopez', 'programa'],
+            ['Estudio Mirame y no me toques', 'programa'],
+            ['Evento especial', 'programa'],
+            ['Vlog Final FA Cup 2022', 'vlog'],
+            ['Vlog Qatar - Mundial 2022', 'vlog'],
+            ['Vlog Qatar - Mundial 2022 | Germán', 'vlog'],
+            ['Vlog España 2023 | Germán', 'vlog'],
+            ['Vlog Francia | Alfre', 'vlog'],
+            ['Vlog España | Alfre', 'vlog'],
+            ['Vlog Londres | Alfre', 'vlog'],
+            ['Vlog Japón | Luquitas', 'vlog'],
+            ['Vlog Roma | Luquitas', 'vlog']
         ];
     }
 

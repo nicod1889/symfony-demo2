@@ -18,11 +18,25 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Edicion>
  */
-class EdicionRepository extends ServiceEntityRepository
-{
-    public function __construct(ManagerRegistry $registry)
-    {
+class EdicionRepository extends ServiceEntityRepository {
+    public function __construct(ManagerRegistry $registry) {
         parent::__construct($registry, Edicion::class);
+    }
+
+    public function findByTipo(string $tipo): array {
+    return $this->createQueryBuilder('e')
+        ->where('e.tipo = :tipo')
+        ->setParameter('tipo', $tipo)
+        ->getQuery()
+        ->getResult();
+    }
+
+    public function findByNombre(string $nombre): ?Edicion {
+    return $this->createQueryBuilder('e')
+        ->where('e.nombre = :nombre')
+        ->setParameter('nombre', $nombre)
+        ->getQuery()
+        ->getOneOrNullResult();
     }
 
     //    /**
