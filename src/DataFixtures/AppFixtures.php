@@ -61,12 +61,37 @@ final class AppFixtures extends Fixture {
             $this->logger->error('Error al cargar los programas: ' . $e->getMessage());
         }
     }
-
+/*
+            ['Vlog España 2023 | Germán', 'vlog'],
+            ['Vlog Francia | Alfre', 'vlog'],
+            ['Vlog España | Alfre', 'vlog'],
+            ['Vlog Londres | Alfre', 'vlog'],
+            ['Vlog Japón | Luquitas', 'vlog'],
+            ['Vlog Roma | Luquitas', 'vlog']
+*/
     private function loadVlogs(ObjectManager $manager): void {
         try {
             $playlists = [
-                'PLF7Kn3e1aapYCnApa8fW4kvvAjqb3-h9K' => 'Vlog Final FA Cup 2022',
-                'PLF7Kn3e1aapav1JcV8ioH7fZYb5chwsrW' => 'Vlog Qatar - Mundial 2022'
+                'PLF7Kn3e1aapYCnApa8fW4kvvAjqb3-h9K' => 'Vlog Londres - Final FA Cup 2022 | Luquitas y Alfre',
+                'PLF7Kn3e1aapav1JcV8ioH7fZYb5chwsrW' => 'Vlog Qatar - Mundial 2022',
+                'PLF7Kn3e1aapZjXCbs4rhAwnfR-NaKqphn' => 'Vlog Qatar - Mundial 2022 | Germán',
+                'PLF7Kn3e1aapYwxjKB2ksUG_ZxuiLT7SKp' => 'Vlog Estambul - Final Champions 2023 | Luquitas y Alfre',
+                'PLF7Kn3e1aapbBfYeYydyXIKV5Yoo6OKiA' => 'Vlog España - Velada del año 2023',
+                'PLF7Kn3e1aapY7xcOmcOfWPV00FTfEsMWj' => 'Vlog España - Velada del año 2023 | Germán',
+                'PLF7Kn3e1aapZB3JLchuMENVSAFOV3pWAm' => 'Vlog Francia - Mundial de rugby 2023 | Alfre',
+                'PLF7Kn3e1aapbH4gVOEnxqVEHJEi5KdvAB' => 'Vlog España - La Liga Experience | Alfre',
+                'PLF7Kn3e1aapbxJ0DNKjDFRrI0JjtaxTFy' => 'Vlog Japón | Luquitas',
+                'PLF7Kn3e1aapaODjpun5zbemcDyuXRXVj1' => 'Vlog Estados Unidos - Final Superbowl 2024 | Luquitas',
+                'PLF7Kn3e1aapZQowsqGo50cF1sKFKTh_WY' => 'Vlog Londres - Final Champions 2024 | Luquitas y Alfre',
+                'PLF7Kn3e1aapZ5mkKmIBBAT_n_dZRWV-PH' => 'Vlog Roma | Luquitas',
+                'PLF7Kn3e1aapb3-D3PYRaG9DxAFs3u0ECm' => 'Vlog EEUU y España - Copa América y Velada del año 2024',
+                'PLF7Kn3e1aapb4FGC9JWr2pfeY2wodUyy1' => 'Vlog EEUU y España - Copa América y Velada del año 2024 | Germán',
+                'PLF7Kn3e1aapZHZoqIW5kyOfT_9U2WRZyp' => 'Vlog EEUU - Copa América 2024 | Alfre',
+                'PLF7Kn3e1aapYIrmgWkGJ9NMKpVpq2jLIO' => 'Vlog Berlín y Paris | Alfre',
+                'PLF7Kn3e1aapYQPQjb-Hr74tGjs_D56yep' => 'Vlog París - Juegos Olimpicos 2024',
+                'PLF7Kn3e1aapb3qsy9bC5kUCY8sU40ZLCu' => 'Vlog México - Luquitas en la F1',
+                'PLF7Kn3e1aapZMQNtXGz-r4ompft78C_gk' => 'Párense de Manos I',
+                'PLF7Kn3e1aapbbzSkcDlQasjjbZzp3Mso6' => 'Párense de Manos II'
             ];
             $edicionRepository = $manager->getRepository(Edicion::class);
     
@@ -527,15 +552,26 @@ final class AppFixtures extends Fixture {
             ['Primavera en Vicente Lopez', 'programa'],
             ['Estudio Mirame y no me toques', 'programa'],
             ['Evento especial', 'programa'],
-            ['Vlog Final FA Cup 2022', 'vlog'],
+            ['Vlog Londres - Final FA Cup 2022 | Luquitas y Alfre', 'vlog'],
             ['Vlog Qatar - Mundial 2022', 'vlog'],
             ['Vlog Qatar - Mundial 2022 | Germán', 'vlog'],
-            ['Vlog España 2023 | Germán', 'vlog'],
-            ['Vlog Francia | Alfre', 'vlog'],
-            ['Vlog España | Alfre', 'vlog'],
-            ['Vlog Londres | Alfre', 'vlog'],
+            ['Vlog Estambul - Final Champions 2023 | Luquitas y Alfre', 'vlog'],
+            ['Vlog España - Velada del año 2023', 'vlog'],
+            ['Vlog España - Velada del año 2023 | Germán', 'vlog'],
+            ['Vlog Francia - Mundial de rugby 2023 | Alfre', 'vlog'],
+            ['Vlog España - La Liga Experience | Alfre', 'vlog'],
             ['Vlog Japón | Luquitas', 'vlog'],
-            ['Vlog Roma | Luquitas', 'vlog']
+            ['Vlog Estados Unidos - Final Superbowl 2024 | Luquitas', 'vlog'],
+            ['Vlog Londres - Final Champions 2024 | Luquitas y Alfre', 'vlog'],
+            ['Vlog Roma | Luquitas', 'vlog'],
+            ['Vlog EEUU y España - Copa América y Velada del año 2024', 'vlog'],
+            ['Vlog EEUU y España - Copa América y Velada del año 2024 | Germán', 'vlog'],
+            ['Vlog EEUU - Copa América 2024 | Alfre', 'vlog'],
+            ['Vlog Berlín y Paris | Alfre', 'vlog'],
+            ['Vlog París - Juegos Olimpicos 2024', 'vlog'],
+            ['Vlog México - Luquitas en la F1', 'vlog'],
+            ['Párense de Manos I', 'pdm'],
+            ['Párense de Manos II', 'pdm']
         ];
     }
 

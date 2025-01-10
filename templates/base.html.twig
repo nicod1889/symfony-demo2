@@ -50,19 +50,37 @@
                                         Programas
                                     </a>
                                 </li>
-                                <li class="nav-item{{ _route == 'app_conductor_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_conductor_index') }}">  
-                                        Conductores
+                                <li class="nav-item{{ _route == 'app_vlog_index' ? ' active' : '' }}">
+                                    <a class="nav-link" href="{{ path('app_vlog_index') }}">  
+                                        Vlogs
                                     </a>
                                 </li>
-                                <li class="nav-item{{ _route == 'app_columnista_index' ? ' active' : '' }}">
-                                    <a class="nav-link" href="{{ path('app_columnista_index') }}">  
-                                        Columnistas
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle dropdown-toggle-split" href="{{ path('app_pdm_index') }}" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">  
+                                        Parense de Manos
                                     </a>
+                                    <div class="dropdown-menu p-0 w-100" role="menu" aria-labelledby="user">
+                                        <a class="dropdown-item m-0" href="{{ path('app_edicion_show', {'id': 28}) }}">PDM 1</a>
+                                        <div class="dropdown-divider m-0 p-0"></div>
+                                        <a class="dropdown-item m-0" href="{{ path('app_edicion_show', {'id': 29}) }}">PDM 2</a>
+                                    </div>
                                 </li>
+
+                                <button class="nav-item" type="button">
+                                    Small split button
+                                </button>
+                                <button type="button" class="dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="sr-only">Toggle Dropdown</span>
+                                </button>
+                                <div class="dropdown-menu">
+                                    ...
+                                </div>
+
+                                <!--
                                 <li class="nav-item{{ _route == 'blog_search' ? ' active' : '' }}">
                                     <a class="nav-link" href="{{ path('blog_search') }}"> <i class="fa fa-search"></i> {{ 'menu.search'|trans }}</a>
                                 </li>
+                                -->
 
                                 {% if app.user %}
                                     <li class="nav-item dropdown">
