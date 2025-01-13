@@ -141,6 +141,14 @@ final class AppFixtures extends Fixture {
                 $programa->setEdicion($programaData['edicion']);
                 $programa->setlinkSpotify($programaData['spotify']);
                 $programa->setComentario($programaData['comentario']);
+                
+                // Convertir la fecha a un objeto DateTime
+                $fecha = \DateTime::createFromFormat('d-m-Y', $programaData['fecha']);
+                if ($fecha === false) {
+                    $this->logger->error('Formato de fecha inválido: ' . $programaData['fecha']);
+                    continue;
+                }
+                $programa->setFecha($fecha);
 
                 $edicion = $edicionRepository->findOneBy(['nombre' => $programaData['edicion']]);
                 if ($edicion) {

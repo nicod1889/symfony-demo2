@@ -3,26 +3,37 @@
 {% block title %}Parense de Manos{% endblock %}
 
 {% block body %}
-    <h1 class="text-center mb-5">PARENSE DE MANOS<h1>
 
-    {% for edicion in ediciones %}
-    <hr>
-    <div class="text-center mt-4">
-        <h2>{{ edicion.nombre }}<h2>
-        <a class="btn btn-primary py-1 px-2 mb-0" href="{{ path('app_edicion_show', {'id': edicion.id}) }}"> Ver todos los videos </a>
+    <div class="container py-5" style="background-color: #312c42;">
+    <h1 class="text-center mb-5">Toda la data sobre las dos ediciones de PDM<h1>
+
+    <a href="{{ path('app_edicion_show', {'id': 28}) }}" class="bg-image hover-zoom mx-auto text-center w-75">
+        <img src="https://www.clarin.com/2023/12/20/5lmVxlGaK_1200x0__1.jpg" alt="" class="rounded zoom-effect">
+    </a>
+    <a href="{{ path('app_edicion_show', {'id': 29}) }}" class="bg-image hover-zoom mx-auto text-center mt-5 w-75">
+        <img src="https://pbs.twimg.com/media/GhCHEFgWoAA4emE?format=jpg" alt="" class="rounded zoom-effect">
+    </a>
     </div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 mt-4 mb-5 justify-content-center">
-        {% for vlog in edicion.vlogs|slice(0, 3) %}
-        <div class="col mb-3">
-            <div class="card h-100">
-                <img src="{{ vlog.miniaturaPequeña }}" class="card-img-top" alt="Miniatura del vlog">
-                <div class="card-body">
-                    <h5 class="card-title">{{ vlog.titulo }}</h5>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-    </div>
-    {% endfor %}
+
+    <style>
+        .bg-image {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            width: 100%;
+        }
+
+        .zoom-effect {
+            transition: transform 0.5s ease;
+            max-width: 100%;
+            height: auto;
+        }
+
+        .zoom-effect:hover {
+            transform: scale(1.1);
+        }
+    </style>
+
     
 {% endblock %}
