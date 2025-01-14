@@ -20,17 +20,24 @@ class ProgramaController extends AbstractController {
     public function index(ProgramaRepository $programaRepository, EdicionRepository $edicionRepository, int $page, Request $request): Response {
         $search = $request->query->get('search', '');
         $edicionId = $request->query->get('edicionId');
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+
+        $startDate = $startDate ? \DateTime::createFromFormat('Y-m-d', $startDate) : null;
+        $endDate = $endDate ? \DateTime::createFromFormat('Y-m-d', $endDate) : null;
 
         $ediciones = $edicionRepository->findByTipo('programa');
         $edicion = $edicionId ? $edicionRepository->find($edicionId) : null;
 
-        $programas = $programaRepository->findLatest($page, $search, $edicion);
+        $programas = $programaRepository->findLatest($page, $search, $edicion, $startDate, $endDate);
 
         return $this->render('programa/index.html.twig', [
             'paginator' => $programas,
             'ediciones' => $ediciones,
             'search' => $search,
             'selectedEdicionId' => $edicionId,
+            'startDate' => $startDate ? $startDate->format('Y-m-d') : '',
+            'endDate' => $endDate ? $endDate->format('Y-m-d') : ''
         ]);
     }
 

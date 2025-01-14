@@ -22,6 +22,21 @@ class Persona3Repository extends ServiceEntityRepository {
             ->getResult();
     }
 
+    public function findColumnistas(): array {
+        $ids = [6, 7, 8, 5, 9, 10];
+    
+        $caseExpression = '';
+        foreach ($ids as $index => $id) {
+            $caseExpression .= "WHEN p.id = $id THEN $index ";
+        }
+    
+        return $this->createQueryBuilder('p')
+            ->where('p.id IN (:ids)')
+            ->setParameter('ids', $ids)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    public function findOneBySomeField($value): ?Persona2
     //    {
     //        return $this->createQueryBuilder('p')
