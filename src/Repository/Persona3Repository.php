@@ -37,7 +37,7 @@ class Persona3Repository extends ServiceEntityRepository {
             ->getResult();
     }
 
-    //    public function findOneBySomeField($value): ?Persona2
+    //    public function findOneBySomeField($value): ?Persona3
     //    {
     //        return $this->createQueryBuilder('p')
     //            ->andWhere('p.exampleField = :val')

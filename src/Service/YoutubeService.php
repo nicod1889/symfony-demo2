@@ -49,9 +49,7 @@ class YoutubeService {
                     $programa->setTitulo($snippet['title']);
                     $programa->setFecha(new \DateTime($snippet['publishedAt']));
                     $programa->setLinkYoutube('https://www.youtube.com/watch?v='.$snippet['resourceId']['videoId']);
-                    $programa->setMiniaturaPequeña($snippet['thumbnails']['medium']['url']);
-                    //$programa->setMiniaturaGrande($snippet['thumbnails']['high']['url']);
-                    $programa->setMiniaturaGrande($snippet['thumbnails']['maxres']['url']);
+                    $programa->setMiniatura($snippet['thumbnails']['maxres']['url']);
 
                     array_unshift($programas, $programa);
                 }
@@ -89,19 +87,14 @@ class YoutubeService {
                     $snippet = $item['snippet'];
                     $vlog = new Vlog();
                     $vlog->setTitulo($snippet['title']);
-                    $vlog->setMiniaturaPequeña($snippet['thumbnails']['high']['url']);
-                    //$vlog->setMiniaturaGrande($snippet['thumbnails']['high']['url']);
-                    //$vlog->setMiniaturaGrande($snippet['thumbnails']['maxres']['url']);
                     if (isset($snippet['thumbnails']['maxres']['url'])) {
-                        $vlog->setMiniaturaGrande($snippet['thumbnails']['maxres']['url']);
-                    } elseif (isset($snippet['thumbnails']['standard']['url'])) {
-                        $vlog->setMiniaturaGrande($snippet['thumbnails']['standard']['url']);
+                        $vlog->setMiniatura($snippet['thumbnails']['maxres']['url']);
                     } elseif (isset($snippet['thumbnails']['medium']['url'])) {
-                        $vlog->setMiniaturaGrande($snippet['thumbnails']['medium']['url']);
+                        $vlog->setMiniatura($snippet['thumbnails']['medium']['url']);
                     } elseif (isset($snippet['thumbnails']['default']['url'])) {
-                        $vlog->setMiniaturaGrande($snippet['thumbnails']['default']['url']);
+                        $vlog->setMiniatura($snippet['thumbnails']['default']['url']);
                     } else {
-                        $vlog->setMiniaturaGrande(null); // No hay miniatura disponible
+                        $vlog->setMiniatura(null); 
                     }
                     
                     array_unshift($vlogs, $vlog);

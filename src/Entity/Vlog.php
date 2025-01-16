@@ -16,10 +16,7 @@ class Vlog {
     private ?string $titulo = null;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $miniaturaPequeña = null;
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $miniaturaGrande = null;
+    private ?string $miniatura = null;
 
     #[ORM\ManyToOne(inversedBy: 'vlogs')]
     private ?Edicion $edicion = null;
@@ -38,22 +35,12 @@ class Vlog {
         return $this;
     }
 
-    public function getMiniaturaPequeña(): ?string {
-        return $this->miniaturaPequeña;
+    public function getMiniatura(): ?string {
+        return $this->miniatura;
     }
 
-    public function setMiniaturaPequeña(string $miniaturaPequeña): static {
-        $this->miniaturaPequeña = $miniaturaPequeña;
-
-        return $this;
-    }
-
-    public function getMiniaturaGrande(): ?string {
-        return $this->miniaturaGrande;
-    }
-
-    public function setMiniaturaGrande(string $miniaturaGrande): static {
-        $this->miniaturaGrande = $miniaturaGrande;
+    public function setMiniatura(string $miniatura): static {
+        $this->miniatura = $miniatura;
 
         return $this;
     }

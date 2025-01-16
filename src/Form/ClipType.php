@@ -11,33 +11,31 @@
 
 namespace App\Form;
 
-use App\Entity\Conductor;
+use App\Entity\Clip;
+use App\Entity\Programa;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ConductorType extends AbstractType
+class ClipType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nombre')
-            ->add('edad')
-            ->add('foto')
-            ->add('cumple', null, [
-                'widget' => 'single_text',
+            ->add('titulo')
+            ->add('miniatura')
+            ->add('programa', EntityType::class, [
+                'class' => Programa::class,
+'choice_label' => 'id',
             ])
-            ->add('apodo')
-            ->add('instagram')
-            ->add('twitter')
-            ->add('youtube')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Conductor::class,
+            'data_class' => Clip::class,
         ]);
     }
 }
