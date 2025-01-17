@@ -595,6 +595,7 @@ final class AppFixtures extends Fixture {
             ['Estudio 2024', 'programa'],
             ['Copa América - Estados Unidos 2024', 'programa'],
             ['España 2024', 'programa'],
+            ['Buenos Aires Trap 2024', 'programa'],
             ['Personajes del año 2024', 'programa']
         ];
     }
