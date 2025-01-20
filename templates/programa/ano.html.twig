@@ -13,13 +13,6 @@
                     <img src="{{ programa.miniatura }}" class="card-img-top " alt="Miniatura del programa ">
                     <div class="card-body">
                         <h5 class="card-title">{{ programa.titulo }}</h5>
-                        {% if programa.edicionClass %}
-                            <p class="card-text mb-0">{{ programa.edicionClass.nombre }}</p>
-                        {% else %}
-                            <p class="card-text mb-0">Edición no disponible</p>
-                        {% endif %}
-                        <p class="card-text mt-2">Programa número {{ programa.id }}</p>
-                        <p class="card-text mt-2">Programa del {{ programa.fecha ? programa.fecha|date('Y-m-d') : '' }}</p>
                     </div>
                     <div class="card-footer text-center" style="padding-left: 15px;padding-right: 15px;">
                         <a class="btn btn-primary py-1 px-2 mr-2" data-toggle="modal" data-target="#programa-modal-{{programa.id}}" target="_blank"> Más data </a>
@@ -32,8 +25,8 @@
 
                 <div class="modal fade text-center" id="programa-modal-{{programa.id}}" tabindex="-1" role="dialog" aria-hidden="true">
                     <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content w-100">
-                        <button type="button" class="close d-flex flex-row-reverse mr-3 mt-3" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <div class="modal-content w-100" style="background-color:rgb(33, 30, 44);">
+                        <button type="button" class="close d-flex flex-row-reverse mr-3 mt-3 text-white" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <div>
                             <h5 class="modal-title">{{ programa.titulo }}</h5>
                             {% if programa.edicionClass %}

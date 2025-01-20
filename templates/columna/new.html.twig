@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Columna{% endblock %}
+
+{% block body %}
+    <h1>Create new Columna</h1>
+
+    {{ include('columna/_form.html.twig') }}
+
+    <a href="{{ path('app_columna_index') }}">back to list</a>
+{% endblock %}

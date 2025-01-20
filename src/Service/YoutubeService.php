@@ -4,10 +4,10 @@ namespace App\Service;
 
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use App\Entity\Programa;
+use App\Entity\Columna;
 use App\Entity\Vlog;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Intervention\Image\ImageManager;
 
 class YoutubeService {
 
@@ -87,6 +87,7 @@ class YoutubeService {
                     $snippet = $item['snippet'];
                     $vlog = new Vlog();
                     $vlog->setTitulo($snippet['title']);
+                    $vlog->setMiniatura($snippet['thumbnails']['high']['url']);
                     if (isset($snippet['thumbnails']['maxres']['url'])) {
                         $vlog->setMiniatura($snippet['thumbnails']['maxres']['url']);
                     } elseif (isset($snippet['thumbnails']['medium']['url'])) {
@@ -94,11 +95,10 @@ class YoutubeService {
                     } elseif (isset($snippet['thumbnails']['default']['url'])) {
                         $vlog->setMiniatura($snippet['thumbnails']['default']['url']);
                     } else {
-                        $vlog->setMiniatura(null); 
+                        $vlog->setMiniatura(null);
                     }
                     
                     array_unshift($vlogs, $vlog);
-                    $this->logger->info($vlog->getTitulo());
                 }
             }
 
@@ -107,5 +107,43 @@ class YoutubeService {
         } while ($nextPageToken);
         
         return $vlogs;
+    }
+
+    public function getColumnasFromPlaylist(string $playlistId): array {
+        $columnas = [];
+        $nextPageToken = null;
+
+        do {
+            $url = sprintf(
+                '%s?part=snippet&playlistId=%s&maxResults=50&key=%s%s',
+                $this->youtubeApiUrl,
+                $playlistId,
+                $this->apiKey,
+                $nextPageToken ? '&pageToken=' . $nextPageToken : ''
+            );
+
+            try {
+                $response = $this->httpClient->request('GET', $url);
+                $data = $response->toArray();
+            } catch (\Exception $e) {
+                throw new \RuntimeException('Error al comunicarse con la API de YouTube: ' . $e->getMessage());
+            }
+
+            if (isset($data['items'])) {
+                foreach ($data['items'] as $item) {
+                    $snippet = $item['snippet'];
+                    $columna = new Columna();
+                    $columna->setTitulo($snippet['title']);
+                    $columna->setLink('https://www.youtube.com/watch?v='.$snippet['resourceId']['videoId']);
+                    
+                    array_unshift($columnas, $columna);
+                }
+            }
+
+            $nextPageToken = $data['nextPageToken'] ?? null;
+
+        } while ($nextPageToken);
+    
+        return $columnas;
     }
 }

@@ -32,9 +32,16 @@ class Edicion {
     #[ORM\OneToMany(targetEntity: Vlog::class, mappedBy: 'edicion')]
     private Collection $vlogs;
 
+    /**
+     * @var Collection<int, Columna>
+     */
+    #[ORM\OneToMany(targetEntity: Columna::class, mappedBy: 'edicion')]
+    private Collection $columnas;
+
     public function __construct() {
         $this->programas = new ArrayCollection();
         $this->vlogs = new ArrayCollection();
+        $this->columnas = new ArrayCollection();
     }
 
     public function getId(): ?int {
@@ -47,7 +54,6 @@ class Edicion {
 
     public function setNombre(string $nombre): static {
         $this->nombre = $nombre;
-
         return $this;
     }
 
@@ -57,7 +63,6 @@ class Edicion {
 
     public function setTipo(string $tipo): static {
         $this->tipo = $tipo;
-
         return $this;
     }
 
@@ -73,7 +78,6 @@ class Edicion {
             $this->programas->add($programa);
             $programa->setEdicionClass($this);
         }
-
         return $this;
     }
 
@@ -84,37 +88,55 @@ class Edicion {
                 $programa->setEdicionClass(null);
             }
         }
-
         return $this;
     }
 
     /**
      * @return Collection<int, Vlog>
      */
-    public function getVlogs(): Collection
-    {
+    public function getVlogs(): Collection {
         return $this->vlogs;
     }
 
-    public function addVlog(Vlog $vlog): static
-    {
+    public function addVlog(Vlog $vlog): static {
         if (!$this->vlogs->contains($vlog)) {
             $this->vlogs->add($vlog);
             $vlog->setEdicion($this);
         }
-
         return $this;
     }
 
-    public function removeVlog(Vlog $vlog): static
-    {
+    public function removeVlog(Vlog $vlog): static {
         if ($this->vlogs->removeElement($vlog)) {
             // set the owning side to null (unless already changed)
             if ($vlog->getEdicion() === $this) {
                 $vlog->setEdicion(null);
             }
         }
+        return $this;
+    }
 
+    /**
+     * @return Collection<int, Columna>
+     */
+    public function getColumnas(): Collection {
+        return $this->columnas;
+    }
+
+    public function addColumna(Columna $columna): static {
+        if (!$this->columnas->contains($columna)) {
+            $this->columnas->add($columna);
+            $columna->setEdicion($this);
+        }
+        return $this;
+    }
+
+    public function removeColumna(Columna $columna): static {
+        if ($this->columnas->removeElement($columna)) {
+            if ($columna->getEdicion() === $this) {
+                $columna->setEdicion(null);
+            }
+        }
         return $this;
     }
 }

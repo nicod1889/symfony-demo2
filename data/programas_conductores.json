@@ -1212,8 +1212,8 @@
 {
 "titulo": "#ParenLaMano Completo - 03/08 | Vorterix",
 "conductores": [1, 2, 3, 4],
-"columnistas":  [6, 8],
-"invitados":  [25],
+"columnistas":  [8],
+"invitados":  [6, 25],
 "spotify": "https://open.spotify.com/episode/573U0eZSrOuDPCWPhFkF9u?si=mT9i7wErSFqeHlwojv_ewA",
 "youtube": "https://www.youtube.com/watch?v=MMZg6fexZaY",
 "fecha": "03-08-2022",
@@ -1707,8 +1707,8 @@
 {
 "titulo": "#ParenLaMano Completo - 05/10 | Vorterix",
 "conductores": [2, 3, 4],
-"columnistas":  [6],
-"invitados":  [87],
+"columnistas":  [],
+"invitados":  [6, 87],
 "spotify": "https://open.spotify.com/episode/2aXDnG41rVLRZqQVVkHXKf?si=qCR1NcSIQaGfQcO2_RY2ig",
 "youtube": "https://www.youtube.com/watch?v=NOb5WhbNuhc",
 "fecha": "05-10-2022",
@@ -4462,7 +4462,7 @@
 "spotify": "",
 "youtube": "https://www.youtube.com/watch?v=uzAFF17B-XQ",
 "fecha": "20-12-2023",
-"edicion": "Estudio Mirame y no me toques",
+"edicion": "Evento especial",
 "comentario": ""
 },
 {
@@ -6480,7 +6480,7 @@
 },
 {
 "titulo": "BUENOS AIRES TRAP EN VIVO - DÍA 1 | Vorterix",
-"conductores": [],
+"conductores": [1, 2, 3, 4, 5],
 "columnistas":  [],
 "invitados":  [],
 "spotify": "",
@@ -6491,7 +6491,7 @@
 },
 {
 "titulo": "BUENOS AIRES TRAP EN VIVO - DÍA 2 | Vorterix",
-"conductores": [],
+"conductores": [1, 2, 3, 4, 5],
 "columnistas":  [],
 "invitados":  [],
 "spotify": "",

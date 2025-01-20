@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20250117124905 extends AbstractMigration
+final class Version20250120133425 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -22,6 +22,8 @@ final class Version20250117124905 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE TABLE clip (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(255) NOT NULL, miniatura VARCHAR(255) DEFAULT NULL, programa_id INTEGER DEFAULT NULL, CONSTRAINT FK_AD201467FD8A7328 FOREIGN KEY (programa_id) REFERENCES programa (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
         $this->addSql('CREATE INDEX IDX_AD201467FD8A7328 ON clip (programa_id)');
+        $this->addSql('CREATE TABLE columna (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(50) NOT NULL, link VARCHAR(255) NOT NULL, edicion_id INTEGER DEFAULT NULL, CONSTRAINT FK_5F77B1FFD651B81E FOREIGN KEY (edicion_id) REFERENCES edicion (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
+        $this->addSql('CREATE INDEX IDX_5F77B1FFD651B81E ON columna (edicion_id)');
         $this->addSql('CREATE TABLE edicion (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(100) NOT NULL, tipo VARCHAR(50) NOT NULL)');
         $this->addSql('CREATE TABLE persona3 (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, nombre VARCHAR(100) NOT NULL, apodo VARCHAR(50) DEFAULT NULL, nacimiento DATE DEFAULT NULL, edad INTEGER DEFAULT NULL, foto VARCHAR(255) DEFAULT NULL, rubro VARCHAR(100) DEFAULT NULL, instagram VARCHAR(255) DEFAULT NULL, twitter VARCHAR(255) DEFAULT NULL, youtube VARCHAR(255) DEFAULT NULL)');
         $this->addSql('CREATE TABLE programa (id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, titulo VARCHAR(255) NOT NULL, fecha DATE NOT NULL, link_youtube VARCHAR(255) DEFAULT NULL, link_spotify VARCHAR(255) DEFAULT NULL, miniatura VARCHAR(255) DEFAULT NULL, edicion VARCHAR(50) DEFAULT NULL, comentario VARCHAR(255) DEFAULT NULL, edicion_class_id INTEGER DEFAULT NULL, CONSTRAINT FK_2F0140D6D63A7C7 FOREIGN KEY (edicion_class_id) REFERENCES edicion (id) NOT DEFERRABLE INITIALLY IMMEDIATE)');
@@ -48,6 +50,7 @@ final class Version20250117124905 extends AbstractMigration
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('DROP TABLE clip');
+        $this->addSql('DROP TABLE columna');
         $this->addSql('DROP TABLE edicion');
         $this->addSql('DROP TABLE persona3');
         $this->addSql('DROP TABLE programa');

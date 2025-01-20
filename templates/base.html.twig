@@ -5,7 +5,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <meta name="view-transition" content="same-origin" />
         <title>{% block title %}Symfony Demo application{% endblock %}</title>
-
         {% block stylesheets %}{% endblock %}
         {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
@@ -37,8 +36,8 @@
                                     <li class="nav-item dropdown">
                                         <a class="nav-link dropdown-toggle{{ _route == 'app_conductores_index' ? ' active' : '' }}" href="{{ path('app_conductores_index') }}" data-bs-toggle="dropdown" aria-expanded="false"> Integrantes </a>
                                         <ul class="dropdown-menu pb-0">
-                                            <li><a class="dropdown-item" href="{{ path('app_conductores_index') }}">Plantel fijo</a></li>
-                                            <li><a class="dropdown-item" href="{{ path('app_columnistas_index') }}">Columnistas</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_conductores_index', {programYear: 2022, page: 1}) }}">Plantel fijo</a></li>
+                                            <li><a class="dropdown-item" href="{{ path('app_columnistas_index', {programYear: 2023, page: 1}) }}">Columnistas</a></li>
                                             <li><hr class="dropdown-divider"></li>
                                             <li><a class="dropdown-item" href="{{ path('app_conductores_index') }}">Todos los integrantes</a></li>
                                         </ul>
@@ -99,7 +98,6 @@
                 <div class="row">
                     <div id="main" class="col-sm-9">
                         {{ include('default/_flash_messages.html.twig') }}
-
                         {% block main %}{% endblock %}
                     </div>
                 </div>

@@ -32,13 +32,13 @@
                 {% for edicion in ediciones %}
                     <div class="carousel-item {% if loop.first %}active{% endif %}">
                         {% set firstVlog = edicion.vlogs|first %}
-                        <img src="{{ firstVlog.miniatura }}" class="d-block w-100 rounded-top img-fluid" alt="Imagen de la edición {{ edicion.nombre }}" >
+                        <img src="{{ firstVlog.miniatura }}" class="d-block w-100 rounded-top img-fluid" alt="Imagen de la edición {{ edicion.nombre }}" style="max-height: 400px; object-fit: cover;">
                         <div class="d-flex justify-content-center mb-0">
                             <div class="text-white p-2 w-100 text-center rounded-bottom" style="background-color: black;">
                                 <h5>{{ edicion.nombre }}</h5>
                                 <div class="d-grid d-md-block mb-2">
-                                    <a href="{{ path('app_edicion_show', {id: edicion.id}) }}" class="btn btn-outline-secondary mr-3 py-1 px-2" type="button">Ver este vlog</a>
-                                    <a href="{{ path('app_vlog_index') }}" class="btn btn-outline-secondary py-1 px-2" type="button">Ver todos los vlogs</a>
+                                    <button class="btn btn-outline-secondary mr-3 py-1 px-2" type="button">Ver este vlog</button>
+                                    <button class="btn btn-outline-secondary py-1 px-2" type="button">Ver todos los vlogs</button>
                                 </div>
                             </div>
                         </div>

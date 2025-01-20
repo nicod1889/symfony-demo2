@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Columna{% endblock %}
+
+{% block body %}
+    <h1>Columna</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ columna.id }}</td>
+            </tr>
+            <tr>
+                <th>Titulo</th>
+                <td>{{ columna.titulo }}</td>
+            </tr>
+            <tr>
+                <th>Link</th>
+                <td>{{ columna.link }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_columna_index') }}">back to list</a>
+
+    <a href="{{ path('app_columna_edit', {'id': columna.id}) }}">edit</a>
+
+    {{ include('columna/_delete_form.html.twig') }}
+{% endblock %}

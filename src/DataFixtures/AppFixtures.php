@@ -6,6 +6,7 @@ use App\Entity\Edicion;
 use App\Entity\Programa;
 use App\Entity\Vlog;
 use App\Entity\User;
+use App\Entity\Columna;
 use App\Entity\Persona3;
 use Psr\Log\LoggerInterface;
 use App\Service\YoutubeService;
@@ -13,7 +14,6 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use function Symfony\Component\String\u;
 
 final class AppFixtures extends Fixture {
     public function __construct(
@@ -26,6 +26,7 @@ final class AppFixtures extends Fixture {
 
     public function load(ObjectManager $manager): void {
         $this->loadUsers($manager);
+        $this->loadColumnas($manager);
         $this->loadEdiciones($manager);
         $this->loadProgramas($manager);
         $this->loadProgramasManual($manager);
@@ -33,6 +34,33 @@ final class AppFixtures extends Fixture {
         $this->loadVlogs($manager);
         $this->vincularConductoresYColumnistas($manager);
     }
+
+    private function loadColumnas(ObjectManager $manager): void {
+        foreach ($this->getColumnaData() as [$titulo, $link, $edicion]) {
+            $columna = new Columna();
+            $columna->setTitulo($titulo);
+            $columna->setLink($link);
+            $manager->persist($columna);
+            $this->addReference($link, $columna);
+        }
+
+        try {
+            $playlistId = 'PLZFDO5xhcskdJd1bjxqBuukB-c9vdthTP';
+            $columnas = $this->youtubeService->getColumnasFromPlaylist($playlistId);
+            foreach ($columnas as $columnaData) {
+                $columna = new Columna();
+                $columna->setTitulo($columnaData->getTitulo());
+                $columna->setLink($columnaData->getLink());
+                $manager->persist($columna);
+            }
+        } catch (\Exception $e) {
+            $this->logger->error('Error al cargar las columnas: ' . $e->getMessage());
+        }
+
+        $manager->flush();
+    }
+
+    
 
     private function loadProgramas(ObjectManager $manager): void {
         try {
@@ -49,77 +77,81 @@ final class AppFixtures extends Fixture {
             }
     
             $manager->flush();
-            $this->logger->info('Programas cargados correctamente desde YouTube.');
         } catch (\Exception $e) {
             $this->logger->error('Error al cargar los programas: ' . $e->getMessage());
         }
     }
 
     private function loadProgramasManual(ObjectManager $manager): void {
+        $bstrap1 = new Programa();
+        $bstrap1->setTitulo('BUENOS AIRES TRAP EN VIVO - DÍA 1 | Vorterix');
+        $bstrap1->setFecha(\DateTime::createFromFormat('d-m-Y', '07-12-2024'));
+        $bstrap1->setLinkYoutube('https://www.youtube.com/live/SeACw2s3o34?si=zD3GSmAWbdOesoau&t=10707');
+        $bstrap1->setMiniatura('https://i.ytimg.com/vi/SeACw2s3o34/maxresdefault.jpg');
+        $manager->persist($bstrap1);
+
+        $bstrap2 = new Programa();
+        $bstrap2->setTitulo('BUENOS AIRES TRAP EN VIVO - DÍA 2 | Vorterix');
+        $bstrap2->setFecha(\DateTime::createFromFormat('d-m-Y', '08-12-2024'));
+        $bstrap2->setLinkYoutube('https://www.youtube.com/live/sF63quen4S0?si=NoO102Wd9umcXXyP&t=15323');
+        $bstrap2->setMiniatura('https://i.ytimg.com/vi/sF63quen4S0/maxresdefault.jpg');
+        $manager->persist($bstrap2);
+
         $programa010322 = new Programa();
         $programa010322->setTitulo('#ParenLaMano completo - 01/03');
         $programa010322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa010322);
-        $manager->flush();
 
         $programa020322 = new Programa();
         $programa020322->setTitulo('#ParenLaMano completo - 02/03');
         $programa020322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa020322);
-        $manager->flush();
 
         $programa030322 = new Programa();
         $programa030322->setTitulo('#ParenLaMano completo - 03/03');
         $programa030322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa030322);
-        $manager->flush();
 
         $programa040322 = new Programa();
         $programa040322->setTitulo('#ParenLaMano completo - 04/03');
         $programa040322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa040322);
-        $manager->flush();
 
         $programa070322 = new Programa();
         $programa070322->setTitulo('#ParenLaMano completo - 07/03');
         $programa070322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa070322);
-        $manager->flush();
 
         $programa180322 = new Programa();
         $programa180322->setTitulo('#ParenLaMano Completo - 18/03 | Vorterix');
         $programa180322->setFecha(\DateTime::createFromFormat('d-m-Y', '01-03-2022'));
         $manager->persist($programa180322);
-        $manager->flush();
 
         $programa040422 = new Programa();
         $programa040422->setTitulo('#ParenLaMano Completo - 04/04 | Vorterix');
         $programa040422->setFecha(\DateTime::createFromFormat('d-m-Y', '04-04-2022'));
         $manager->persist($programa040422);
-        $manager->flush();
 
         $programa180522 = new Programa();
         $programa180522->setTitulo('#ParenLaMano Completo - 18/05 | Vorterix');
         $programa180522->setFecha(\DateTime::createFromFormat('d-m-Y', '18-05-2022'));
         $manager->persist($programa180522);
-        $manager->flush();
 
         $programa251022 = new Programa();
         $programa251022->setTitulo('#ParenLaMano Completo - 25/10 | Vorterix');
         $programa251022->setFecha(\DateTime::createFromFormat('d-m-Y', '25-10-2022'));
         $manager->persist($programa251022);
-        $manager->flush();
 
         $programa111122 = new Programa();
         $programa111122->setTitulo('#ParenLaMano Completo - 11/11 | Vorterix');
         $programa111122->setFecha(\DateTime::createFromFormat('d-m-Y', '11-11-2022'));
         $manager->persist($programa111122);
-        $manager->flush();
 
         $programa181122 = new Programa();
         $programa181122->setTitulo('#ParenLaMano Completo - 18/11 | Vorterix');
         $programa181122->setFecha(\DateTime::createFromFormat('d-m-Y', '18-11-2022'));
         $manager->persist($programa181122);
+
         $manager->flush();
     }
 
@@ -169,7 +201,6 @@ final class AppFixtures extends Fixture {
             }
     
             $manager->flush();
-            $this->logger->info('Vlogs cargados correctamente desde YouTube.');
         } catch (\Exception $e) {
             $this->logger->error('Error al cargar los vlogs: ' . $e->getMessage());
         }
@@ -186,7 +217,7 @@ final class AppFixtures extends Fixture {
             foreach ($programasData as $programaData) {
                 $programa = $manager->getRepository(Programa::class)->findOneBy(['linkYoutube' => $programaData['youtube']]);
                 if (!$programa) {
-                    $this->logger->error('No se encontró el programa con el título: ' . $programaData['youtube'] . 'y fecha ' . $programaData['fecha']);
+                    $this->logger->error('No se encontró el programa con el título: ' . $programaData['youtube'] . ' y fecha ' . $programaData['fecha']);
                     continue;
                 }
 
@@ -596,7 +627,46 @@ final class AppFixtures extends Fixture {
             ['Copa América - Estados Unidos 2024', 'programa'],
             ['España 2024', 'programa'],
             ['Buenos Aires Trap 2024', 'programa'],
-            ['Personajes del año 2024', 'programa']
+            ['Personajes del año 2024', 'programa'],
+            ['Política', 'columna'],
+            ['Fútbol', 'columna'],
+            ['Noski Game', 'columna'],
+            ['Mundo Brasil', 'columna'],
+            ['Música', 'columna'],
+        ];
+    }
+
+    /**
+     * @return array<array{string, string, string, string}>
+     */
+    private function getColumnaData(): array {
+        return [
+            // $getColumnaData = [$titulo, $link, $edicion];
+            ['Politica #1', 'https://youtu.be/4Mxeine9d-k?si=ABGimtJNSJDOWrw3&t=3638', 'Política'],
+            ['Politica #2', 'https://youtu.be/IjDvoIgCUyU?si=cuq7tAsovnk9ufPu&t=1213', 'Política'],
+            ['Politica #3', 'https://youtu.be/JxRrOmZY5ZI?si=vJvEa9-HlyW8UY-D&t=3447', 'Política'],
+            ['Politica #4', 'https://youtu.be/GaYf3DR-xA8?si=hErjwXweTRugp637&t=3051', 'Política'],
+            ['Politica #5', 'https://youtu.be/dP9e3OE6vTo?si=sZKpXH600X-mfOPZ&t=3537', 'Política'],
+            ['Politica #6', 'https://youtu.be/LIRF6DT1VxY?si=tjVy1LkXpltQqI78&t=2890', 'Política'],
+            ['Politica #7', 'https://youtu.be/qEq37mSLGF4?si=I0ssQxBtN9sb9RnQ&t=3173', 'Política'],
+            ['Politica #8', 'https://youtu.be/4dTxcm4wSS0?si=FJp5QoNsh2_-Cky4&t=1884', 'Política'],
+            ['Politica #9', 'https://youtu.be/J75i6WfHNW4?si=m8Lw26LhpPS7ZeeQ&t=3151', 'Política'],
+            ['Politica #10', 'https://youtu.be/5JS4lJxtLyo?si=CTTsA4IMjg6woFlT&t=3077', 'Política'],
+            ['Politica #11', 'https://youtu.be/NbbpWI4g04o?si=InhkoZiGHvuyE3Ma&t=2986', 'Política'],
+            ['Politica #12', 'https://youtu.be/6dyv3lgSoUw?si=72QIBqmZ3DEexaTO&t=3123', 'Política'],
+            ['Politica #13', 'https://youtu.be/bOP4b2-fFt8?si=PD5sbQrTkR7WHDSf&t=3369', 'Política'],
+            ['Politica #14', 'https://youtu.be/MCQz8Dbn4QM?si=qwvpB8QxPBfBip-p&t=3048', 'Política'],
+            ['Politica #15', 'https://youtu.be/e7JR49aoQ1Q?si=ksA5i140fQKJhmf3&t=3192', 'Política'],
+            ['Politica #16', 'https://youtu.be/7mpFf5f17J4?si=n2-QIFNGg--jGbAz&t=3494', 'Política'],
+            ['Politica #17', 'https://youtu.be/rff-C0V1MFM?si=85TfnryyU8wF00nT&t=2135', 'Política'],
+            ['Politica #18', 'https://youtu.be/QgUv-MxmPeQ?si=QKtcKogEb1Z0lEL4&t=1720', 'Política'],
+            ['Politica #19', 'https://youtu.be/aQpaouzLrxA?si=GJMYMRXLEDIU1xDj&t=2659', 'Política'],
+            ['Politica #20', 'https://youtu.be/uFgvgjq05ME?si=FY4QwMgD7b9uuxYl&t=2040', 'Política'],
+            ['Politica #21', 'https://youtu.be/wIQ2CgT8bLk?si=LY_JMy2AM8mLjbTf&t=1930', 'Política'],
+            ['Politica #22', 'https://youtu.be/y58oqY-MVS0?si=3hzjcBHdZLu9Ns2Z&t=1865', 'Política'],
+            ['Politica #23', 'https://youtu.be/tk3yT4T4Isk?si=CjH1tqd3IGNU8FyX&t=2167', 'Política'],
+            ['Politica #24', 'https://youtu.be/9weTu566fM8?si=6TTN6NOQnvYApCb6&t=2027', 'Política'],
+            ['Politica #25', 'https://youtu.be/IO8SiDteyqk?si=QoOBDNf_wOJOFLZV&t=1949', 'Política']
         ];
     }
 }

@@ -11,19 +11,20 @@
 
 namespace App\Form;
 
+use App\Entity\Columna;
 use App\Entity\Edicion;
-use App\Entity\Vlog;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class VlogType extends AbstractType
+class ColumnaType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('titulo')
+            ->add('link')
             ->add('edicion', EntityType::class, [
                 'class' => Edicion::class,
 'choice_label' => 'id',
@@ -34,7 +35,7 @@ class VlogType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Vlog::class,
+            'data_class' => Columna::class,
         ]);
     }
 }

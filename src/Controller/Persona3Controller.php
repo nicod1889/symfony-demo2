@@ -51,4 +51,11 @@ class Persona3Controller extends AbstractController {
             'columnistas' => $persona3Repository->findColumnistas(),
         ]);
     }
+
+    #[Route('/columnas/{id}', name: 'app_columnas_index', methods: ['GET'])] 
+    public function columnas(Persona3Repository $persona3Repository): Response   {
+        return $this->render('persona3/columnas.html.twig', [
+            'columnistas' => $persona3Repository->findColumnistas(),
+        ]);
+    }
 }
